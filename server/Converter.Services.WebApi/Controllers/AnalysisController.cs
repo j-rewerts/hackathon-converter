@@ -14,7 +14,8 @@ namespace Converter.Services.WebApi.Controllers
         public IActionResult Start(string id)
         {
             // TODO: Call the Converter.Services.OpenXml project to analyze the files
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+
 
             return Ok();
         }
