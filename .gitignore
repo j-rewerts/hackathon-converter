@@ -35,3 +35,7 @@ link-checker-results.txt
 /public/docs/dart
 /public/docs/ts/_cache
 /public/docs/_examples/*/dart
+server/**/bin/**
+server/**/*.dll
+server/**/*.pdb
+server/**/obj/**
