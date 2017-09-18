@@ -9,6 +9,8 @@ namespace Converter.Services.Data
     {
         public AnalysisContext() : base() { }
 
+        public DbSet<Workbook> Workbooks { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
