@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Converter.Services.Data\Converter.Services.Data.csproj" />
+    <ProjectReference Include="..\Converter.Services.OpenXml\Converter.Services.OpenXml.csproj" />
   </ItemGroup>
 
 </Project>
