@@ -11,10 +11,9 @@ namespace Converter.Services.WebApi.Controllers
     public class AnalysisController : Controller
     {
         [HttpPost("[action]/{:id}")]
-       // public IActionResult Start(string id)
-       public IEnumerable<string> Start(string id)
+        public IActionResult Start(string id)
         {
-            return new string[] { "200 ok!", " Whasssup ?" };
+            return Ok();
         }
 
         [HttpGet("[action]")]
