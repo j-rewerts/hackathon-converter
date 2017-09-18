@@ -13,12 +13,10 @@ namespace Converter.Services.WebApi.Controllers
         [HttpPost("[action]/{:id}")]
         public IActionResult Start(string id)
         {
-            // TODO: Call the Converter.Services.OpenXml project to analyze the files
-            //throw new NotImplementedException();
-
-
             return Ok();
         }
+
+
 
         [HttpGet("[action]")]
         public IActionResult Retrieve()
