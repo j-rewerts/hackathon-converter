@@ -39,3 +39,4 @@ server/**/bin/**
 server/**/*.dll
 server/**/*.pdb
 server/**/obj/**
+server/.vs/**
