@@ -11,10 +11,13 @@ namespace Converter.Services.WebApi.Controllers
     public class AnalysisController : Controller
     {
         [HttpPost("[action]/{:id}")]
-       // public IActionResult Start(string id)
-       public IEnumerable<string> Start(string id)
+        public IActionResult Start(string id)
         {
-            return new string[] { "200 ok!", " Whasssup ?" };
+            // TODO: Call the Converter.Services.OpenXml project to analyze the files
+            //throw new NotImplementedException();
+
+
+            return Ok();
         }
 
         [HttpGet("[action]")]

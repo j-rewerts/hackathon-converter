@@ -17,5 +17,13 @@ namespace Converter.Services.Data
 
             // TODO: setup fluent API stuff 
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            string connectionString = ""; //TODO get from configuration
+            optionsBuilder.UseMySql(connectionString);
+        }
     }
 }
