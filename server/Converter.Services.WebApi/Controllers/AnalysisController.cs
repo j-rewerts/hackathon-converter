@@ -27,9 +27,12 @@ namespace Converter.Services.WebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost("[action]/{:id}")]
-        public IActionResult Start(string id)
+        public async Task<IActionResult> Start(string id)
         {
-            _repository.AddAnalysisAsync(id);
+
+            var analysisId = await _repository.AddAnalysisAsync(id);
+
+
 
             return Ok();
         }
@@ -44,16 +47,45 @@ namespace Converter.Services.WebApi.Controllers
         ///     status:"....","not started","In Porgress", "Completed", "Failed"
         ///     Issues:[{Message:"the message"}]
         /// }</returns>
-        [HttpGet("[action]/{:id}")]
+        [HttpGet("{:id}")]
         public IActionResult Retrieve(string id)
         {
             // TODO: implement
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            // example return value
+            return Ok(new
+            {
+                status =  "Completed",
+                issues =  new object[] { new { message = "Contains VBA" } },
+                sheets = new object[]  
+                { 
+                    new {
+                        cellCount = 1000000,
+                        rowCount = 1000,
+                        name = "Sheet1",
+                        issues = new object[]
+                        {
+                            new {
+                                message = "Too many cells"
+                            }, new {
+                                message = "Many cells have formula"
+                            }
+                        }
+                    },
+                    new {
+                        cellCount = 86,
+                        rowCount = 43,
+                        name = "Sheet2",
+                        issues = new object[]
+                        { }
+                    }
+                }
+            });
         }
 
         /// http://localhost:24822/Analysis/Retrieve/abc123
         /// note: 
-        [HttpGet("[action]")]
+        [HttpGet()]
         public IActionResult Retrieve()
         {
             // TODO: implement
