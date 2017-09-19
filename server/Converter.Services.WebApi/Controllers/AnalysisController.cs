@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Converter.Services.Data;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,13 @@ namespace Converter.Services.WebApi.Controllers
     [Route("[controller]")]
     public class AnalysisController : Controller
     {
+        public AnalysisController(IAnalysisRepository repository)
+        {
+            this._repository = repository;
+        }
+
+        private readonly IAnalysisRepository _repository;
+
         /// <summary>
         ///  1. get the file
         ///  2. start analyzing the file for given id
@@ -20,7 +28,9 @@ namespace Converter.Services.WebApi.Controllers
         /// <returns></returns>
         [HttpPost("[action]/{:id}")]
         public IActionResult Start(string id)
-        {   
+        {
+            _repository.AddAnalysisAsync(id);
+
             return Ok();
         }
 
