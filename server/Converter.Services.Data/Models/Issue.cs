@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Converter.Services.Data.Models
 {
-    public class Issue
+    internal class Issue
     {
         public int IssueID { get; set; }
         public string CellReference { get; set; }

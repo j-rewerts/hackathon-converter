@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Converter.Services.Data
 {
-    public class AnalysisContext : DbContext
+    internal class AnalysisContext : DbContext
     {
         public AnalysisContext(DbContextOptions<AnalysisContext> options)
             : base(options)

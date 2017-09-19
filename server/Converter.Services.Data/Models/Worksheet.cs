@@ -2,7 +2,7 @@
 
 namespace Converter.Services.Data.Models
 {
-    public class Worksheet
+    internal class Worksheet
     {
         public int WorksheetID { get; set; }
         public int RowCount { get; set; }
