@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { MdCardModule } from '@angular/material';
-import { CovalentExpansionPanelModule } from '@covalent/core';
+import { CovalentExpansionPanelModule, CovalentDataTableModule } from '@covalent/core';
 import { CovalentHttpModule } from '@covalent/http';
 import { CovalentHighlightModule } from '@covalent/highlight';
 import { CovalentMarkdownModule } from '@covalent/markdown';
@@ -28,6 +28,7 @@ import { PageNotFoundComponent } from './page-not-found.component';
     AppRoutingModule,
     MdCardModule,
     CovalentExpansionPanelModule,
+    CovalentDataTableModule,
     CovalentHttpModule.forRoot(),
     CovalentHighlightModule,
     CovalentMarkdownModule
