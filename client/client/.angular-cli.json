@@ -17,9 +17,10 @@
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
-      "prefix": "app",
+      "prefix": "cv",
       "styles": [
-        "styles.css",
+        "styles.scss",
+        "theme.scss",
         "../node_modules/@covalent/core/common/platform.scss"
       ],
       "scripts": [],
@@ -52,7 +53,11 @@
     }
   },
   "defaults": {
-    "styleExt": "css",
+    "styleExt": "scss",
+    "serve": {
+      "port": 4200,
+      "host": "localhost"
+    },
     "component": {}
   }
 }
