@@ -15,11 +15,21 @@ namespace Converter.Services.Data
         public DbSet<Workbook> Workbooks { get; set; }
         public DbSet<Worksheet> Worksheets { get; set; }
 
+        public DbSet<Workbook> Workbooks { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             // TODO: setup fluent API stuff 
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            string connectionString = ""; //TODO get from configuration
+            optionsBuilder.UseMySql(connectionString);
         }
     }
 }
