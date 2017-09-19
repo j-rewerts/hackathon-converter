@@ -8,9 +8,10 @@ using Converter.Services.Data;
 namespace Converter.Services.Data.Migrations
 {
     [DbContext(typeof(AnalysisContext))]
-    partial class AnalysisContextModelSnapshot : ModelSnapshot
+    [Migration("20170919162004_AddingTables")]
+    partial class AddingTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2");
@@ -69,8 +70,6 @@ namespace Converter.Services.Data.Migrations
                     b.Property<int?>("AnalysisStatusId");
 
                     b.Property<int>("CellCount");
-
-                    b.Property<string>("Name");
 
                     b.Property<int>("RowCount");
 

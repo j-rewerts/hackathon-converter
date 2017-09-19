@@ -5,6 +5,10 @@ namespace Converter.Services.Data
 {
     internal class AnalysisContext : DbContext
     {
+        public AnalysisContext()
+            : base()
+        { }
+
         public AnalysisContext(DbContextOptions<AnalysisContext> options)
             : base(options)
         { }
