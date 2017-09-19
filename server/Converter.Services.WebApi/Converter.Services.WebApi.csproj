@@ -27,4 +27,14 @@
     <ProjectReference Include="..\Converter.Services.OpenXml\Converter.Services.OpenXml.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="app.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="app.yaml" CopyToOutputDirecetory="Always" />
+  </ItemGroup>
+  
 </Project>
