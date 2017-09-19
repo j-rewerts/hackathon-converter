@@ -40,3 +40,4 @@ server/**/*.dll
 server/**/*.pdb
 server/**/obj/**
 server/.vs/**
+*client_secret*
