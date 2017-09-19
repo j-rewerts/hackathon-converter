@@ -17,14 +17,14 @@ namespace Converter.Services.Data
 
         private readonly AnalysisContext _context;
 
-        public async Task<int> AddAnalysisAsync(string googleFileId)
+        public async Task<int> AddAnalysisAsync(string fileId)
         {
-            var wb = new Workbook();
+            var analysis = new Analysis();
             // TODO; set workbook properties here (maybe just fileId?)
-            _context.Workbooks.Add(wb);
+            _context.Analysises.Add(analysis);
             await _context.SaveChangesAsync();
 
-            return wb.WorkbookID;
+            return analysis.AnalysisID;
         }
     }
 }

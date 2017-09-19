@@ -1,7 +1,4 @@
-﻿using Converter.Services.Data.Enums;
-
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Converter.Services.Data.Models
 {
@@ -12,8 +9,5 @@ namespace Converter.Services.Data.Models
         public string Name { get; set; }
         public int RowCount { get; set; }
         public int CellCount { get; set; }
-
-        public AnalysisStatus AnalysisStatus { get; set; }
-        public List<Issue> Issues { get; set; }
     }
 }

@@ -8,6 +8,7 @@ namespace Converter.Services.Data.Models
         public int IssueID { get; set; }
         public string CellReference { get; set; }
 
+        public Worksheet Worksheet { get; set; }
         public IssueType IssueType { get; set; }
     }
 }

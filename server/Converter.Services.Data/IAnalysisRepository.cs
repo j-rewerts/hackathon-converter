@@ -7,7 +7,7 @@ namespace Converter.Services.Data
 {
     public interface IAnalysisRepository
     {
-        Task<int> AddAnalysisAsync(string googleFileId);
+        Task<int> AddAnalysisAsync(string fileId);
 
         // TODO: add methods for retrieving analysis results
 
