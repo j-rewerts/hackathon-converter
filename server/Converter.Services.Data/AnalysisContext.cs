@@ -15,8 +15,6 @@ namespace Converter.Services.Data
         public DbSet<Workbook> Workbooks { get; set; }
         public DbSet<Worksheet> Worksheets { get; set; }
 
-        public DbSet<Workbook> Workbooks { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
