@@ -9,21 +9,23 @@ import { IFile } from '../interfaces/report.interface';
 
 
 const FILES: IFile[] = [
-  { id: 1, name: "file 1", status: "complete" },
-  { id: 2, name: "file 2", status: "complete", 
-    issues: [ { id: 1, message: "formula in C1 can't be converted", type: "Unconvertable Formula" } ] },
-  { id: 3, name: "file 3", status: "pending" }
+  { id: 1, name: 'file 1', status: 'complete' },
+  { id: 2, name: 'file 2', status: 'complete', 
+    issues: [ { id: 1, message: 'formula in C1 cannot be converted', type: 'Unconvertable Formula' } ] },
+  { id: 3, name: 'file 3', status: 'pending' }
 ]
 
 
 export class SummaryComponent implements OnInit {
 
   fileList = FILES;
-  selectedReport: IFile;
+  selectedFile: IFile;
   
-
   constructor() { }
 
   ngOnInit() {
+  }
+  onSelect(file: IFile): void {
+    this.selectedFile = file;
   }
 }
