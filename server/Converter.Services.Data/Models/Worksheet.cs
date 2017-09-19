@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Converter.Services.Data.Enums;
+
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Converter.Services.Data.Models

@@ -13,7 +13,6 @@ namespace Converter.Services.Data
             : base(options)
         { }
 
-        public DbSet<AnalysisStatus> AnalysisStatuses { get; set; }
         public DbSet<Issue> Issues { get; set; }
         public DbSet<IssueType> IssueTypes { get; set; }
         public DbSet<Workbook> Workbooks { get; set; }
