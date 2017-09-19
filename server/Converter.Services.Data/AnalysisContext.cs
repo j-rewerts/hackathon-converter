@@ -13,11 +13,11 @@ namespace Converter.Services.Data
             : base(options)
         { }
 
-        public DbSet<Analysis> Analysises { get; set; }
-        public DbSet<Issue> Issues { get; set; }
-        public DbSet<IssueType> IssueTypes { get; set; }
-        public DbSet<Workbook> Workbooks { get; set; }
-        public DbSet<Worksheet> Worksheets { get; set; }
+        public DbSet<Analysis> Analysis { get; set; }
+        public DbSet<Issue> Issue { get; set; }
+        public DbSet<IssueType> IssueType { get; set; }
+        public DbSet<Workbook> Workbook { get; set; }
+        public DbSet<Worksheet> Worksheet { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

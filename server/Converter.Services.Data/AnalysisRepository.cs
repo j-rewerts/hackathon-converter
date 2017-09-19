@@ -21,7 +21,7 @@ namespace Converter.Services.Data
         {
             var analysis = new Analysis();
             // TODO; set workbook properties here (maybe just fileId?)
-            _context.Analysises.Add(analysis);
+            _context.Analysis.Add(analysis);
             await _context.SaveChangesAsync();
 
             return analysis.AnalysisID;
