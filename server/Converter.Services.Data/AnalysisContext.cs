@@ -26,7 +26,7 @@ namespace Converter.Services.Data
         {
             base.OnConfiguring(optionsBuilder);
 
-            string connectionString = ""; //TODO get from configuration
+            string connectionString = "server=35.197.80.226;Database=Converter;Uid=root;Pwd=P@ssw0rd;"; //TODO get from configuration
             optionsBuilder.UseMySql(connectionString);
         }
     }

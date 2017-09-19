@@ -40,3 +40,5 @@ server/**/*.dll
 server/**/*.pdb
 server/**/obj/**
 server/.vs/**
+server/**.suo
+server/**/storage.ide
