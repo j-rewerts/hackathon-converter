@@ -2,7 +2,7 @@
 
 namespace Converter.Services.Data.Models
 {
-    public class Workbook
+    internal class Workbook
     {
         public int WorkbookID { get; set; }
         public string GoogleID { get; set; }

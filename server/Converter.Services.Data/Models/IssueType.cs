@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Converter.Services.Data.Models
 {
-    public class IssueType
+    internal class IssueType
     {
         public int IssueTypeID { get; set; }
         public string Name { get; set; }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Converter.Services.Data.Models
 {
-    public class AnalysisStatus
+    internal class AnalysisStatus
     {
         private AnalysisStatus(AnalysisStatusEnum @enum)
         {
@@ -24,7 +24,7 @@ namespace Converter.Services.Data.Models
         public static implicit operator AnalysisStatusEnum(AnalysisStatus analysisStatus) => (AnalysisStatusEnum)analysisStatus.Id;
     }
 
-    public enum AnalysisStatusEnum
+    internal enum AnalysisStatusEnum
     {
         NotStarted,
         InProgress,
