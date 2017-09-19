@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Converter.Services.Data.Enums;
+
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Converter.Services.Data.Models
 {
     internal class Workbook
     {
+        [Key]
         public int WorkbookID { get; set; }
         public string GoogleID { get; set; }
         public string FileName { get; set; }

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Converter.Services.Data.Models
 {
     internal class Issue
     {
+        [Key]
         public int IssueID { get; set; }
         public string CellReference { get; set; }
 

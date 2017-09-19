@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Converter.Services.Data.Models;
 using System.Threading.Tasks;
 
 namespace Converter.Services.Data
@@ -26,7 +24,7 @@ namespace Converter.Services.Data
             _context.Workbooks.Add(wb);
             await _context.SaveChangesAsync();
 
-            return wb.Id;
+            return wb.WorkbookID;
         }
     }
 }

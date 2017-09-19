@@ -4,17 +4,29 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Converter.Services.Data;
-using Converter.Services.Data.Enums;
 
 namespace Converter.Services.Data.Migrations
 {
     [DbContext(typeof(AnalysisContext))]
-    partial class AnalysisContextModelSnapshot : ModelSnapshot
+    [Migration("20170919162004_AddingTables")]
+    partial class AddingTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2");
+
+            modelBuilder.Entity("Converter.Services.Data.Models.AnalysisStatus", b =>
+                {
+                    b.Property<int>("Id");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AnalysisStatuses");
+                });
 
             modelBuilder.Entity("Converter.Services.Data.Models.Issue", b =>
                 {
@@ -25,15 +37,11 @@ namespace Converter.Services.Data.Migrations
 
                     b.Property<int?>("IssueTypeID");
 
-                    b.Property<int?>("WorkbookID");
-
                     b.Property<int?>("WorksheetID");
 
                     b.HasKey("IssueID");
 
                     b.HasIndex("IssueTypeID");
-
-                    b.HasIndex("WorkbookID");
 
                     b.HasIndex("WorksheetID");
 
@@ -54,42 +62,34 @@ namespace Converter.Services.Data.Migrations
                     b.ToTable("IssueTypes");
                 });
 
-            modelBuilder.Entity("Converter.Services.Data.Models.Workbook", b =>
-                {
-                    b.Property<int>("WorkbookID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AnalysisStatus");
-
-                    b.Property<string>("FileName");
-
-                    b.Property<string>("GoogleID");
-
-                    b.HasKey("WorkbookID");
-
-                    b.ToTable("Workbooks");
-                });
-
             modelBuilder.Entity("Converter.Services.Data.Models.Worksheet", b =>
                 {
                     b.Property<int>("WorksheetID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AnalysisStatus");
+                    b.Property<int?>("AnalysisStatusId");
 
                     b.Property<int>("CellCount");
 
-                    b.Property<string>("Name");
-
                     b.Property<int>("RowCount");
-
-                    b.Property<int?>("WorkbookID");
 
                     b.HasKey("WorksheetID");
 
-                    b.HasIndex("WorkbookID");
+                    b.HasIndex("AnalysisStatusId");
 
                     b.ToTable("Worksheets");
+                });
+
+            modelBuilder.Entity("Converter.Services.Data.Workbook", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Filename");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Workbooks");
                 });
 
             modelBuilder.Entity("Converter.Services.Data.Models.Issue", b =>
@@ -98,10 +98,6 @@ namespace Converter.Services.Data.Migrations
                         .WithMany()
                         .HasForeignKey("IssueTypeID");
 
-                    b.HasOne("Converter.Services.Data.Models.Workbook")
-                        .WithMany("Issues")
-                        .HasForeignKey("WorkbookID");
-
                     b.HasOne("Converter.Services.Data.Models.Worksheet")
                         .WithMany("Issues")
                         .HasForeignKey("WorksheetID");
@@ -109,9 +105,9 @@ namespace Converter.Services.Data.Migrations
 
             modelBuilder.Entity("Converter.Services.Data.Models.Worksheet", b =>
                 {
-                    b.HasOne("Converter.Services.Data.Models.Workbook")
-                        .WithMany("Worksheets")
-                        .HasForeignKey("WorkbookID");
+                    b.HasOne("Converter.Services.Data.Models.AnalysisStatus", "AnalysisStatus")
+                        .WithMany()
+                        .HasForeignKey("AnalysisStatusId");
                 });
         }
     }
