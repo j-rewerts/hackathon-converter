@@ -1,11 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { CovalentLayoutModule, CovalentStepsModule /*, any other modules */ } from '@covalent/core';
-// (optional) Additional Covalent Modules imports
+import { MdCardModule } from '@angular/material';
+import { CovalentExpansionPanelModule } from '@covalent/core';
 import { CovalentHttpModule } from '@covalent/http';
 import { CovalentHighlightModule } from '@covalent/highlight';
 import { CovalentMarkdownModule } from '@covalent/markdown';
-import { CovalentDynamicFormsModule } from '@covalent/dynamic-forms';
+// import { CovalentDynamicFormsModule } from '@covalent/dynamic-forms';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,14 +24,14 @@ import { PageNotFoundComponent } from './page-not-found.component';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
-    CovalentLayoutModule,
-    CovalentStepsModule,
-    // (optional) Additional Covalent Modules imports
+    MdCardModule,
+    CovalentExpansionPanelModule,
     CovalentHttpModule.forRoot(),
     CovalentHighlightModule,
-    CovalentMarkdownModule,
-    CovalentDynamicFormsModule
+    CovalentMarkdownModule
+    // CovalentDynamicFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

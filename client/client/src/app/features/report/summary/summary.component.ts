@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IFile } from '../interfaces/report.interface';
 
 @Component({
   selector: 'cv-summary',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SummaryComponent implements OnInit {
 
+  fileList: IFile[];
+
   constructor() { }
 
   ngOnInit() {
   }
-
 }
