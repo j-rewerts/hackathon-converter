@@ -42,3 +42,4 @@ server/**/obj/**
 server/.vs/**
 server/**.suo
 server/**/storage.ide
+.vs
