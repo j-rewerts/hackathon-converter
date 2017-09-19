@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Converter.Services.Data;
 
 namespace Converter.Services.WebApi
 {
@@ -29,6 +30,10 @@ namespace Converter.Services.WebApi
         {
             // Add framework services.
             services.AddMvc();
+            services.AddAnalysisRepository(options =>
+            {
+                // TODO: configure database options (like connection string)
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
