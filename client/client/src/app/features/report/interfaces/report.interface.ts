@@ -1,5 +1,6 @@
 export interface IIssue {
-  messages: string[];
+  messages: string;
+  type: string;
 }
 
 export interface IFile {
