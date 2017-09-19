@@ -1,13 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Converter.Services.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Converter.Services.Data
 {
     public class AnalysisContext : DbContext
     {
-        public AnalysisContext() : base() { }
+        public AnalysisContext(DbContextOptions<AnalysisContext> options)
+            : base(options)
+        { }
+
+        public DbSet<AnalysisStatus> AnalysisStatuses { get; set; }
+        public DbSet<Issue> Issues { get; set; }
+        public DbSet<IssueType> IssueTypes { get; set; }
+        public DbSet<Workbook> Workbooks { get; set; }
+        public DbSet<Worksheet> Worksheets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
