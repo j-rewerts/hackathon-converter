@@ -12,17 +12,22 @@ namespace Converter.Services.OpenXml
     {
         private Stream file;
         private Workbook workbook;
+        private IList<Worksheet> worksheets;
         
         public ExcelReader(Stream file, string GoogleFileID)
         {
             this.file = file;
             this.workbook = new Workbook();
             this.workbook.GoogleFileID = GoogleFileID;
+            this.worksheets = new List<Worksheet>();
         }
         public Workbook GetWorkbook()
         {
-            
             return this.workbook;
+        }
+        public IEnumerable<Worksheet> GetWorksheets()
+        {
+            return this.worksheets;
         }
         public IEnumerable<CellInfo> ReadFile()//Action<object> onCellValueRead)
         {
@@ -32,6 +37,8 @@ namespace Converter.Services.OpenXml
                 DoAdditionalChecks(workbookPart);
                 foreach (WorksheetPart worksheetPart in workbookPart.WorksheetParts)
                 {
+                    var worksheetInfo = new Worksheet();
+                    this.worksheets.Add(worksheetInfo);
                     foreach (SheetData sheetData in worksheetPart.Worksheet.Elements<SheetData>())
                         foreach (var cellInfo in GetCellValues(workbookPart, sheetData))
                             yield return cellInfo;
@@ -62,6 +69,7 @@ namespace Converter.Services.OpenXml
             {
                 foreach (Cell c in r.Elements<Cell>())
                 {
+                    c.GetRowIndex();
                     text = workbookPart.TryGetStringFromCell(c);// c.CellValue.Text;
                     Console.Write(text + " ");
                     yield return new CellInfo() { Cell = c, Value = text, SheetName = sheetName };

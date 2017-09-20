@@ -40,7 +40,7 @@ namespace Converter.Services.WebApi
 
             });
 
-            services.AddSingleton<ExcelAnalyzer>();
+            services.AddScoped<ExcelAnalyzer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

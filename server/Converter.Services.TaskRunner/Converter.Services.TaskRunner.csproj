@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.29.1.981" />
     <PackageReference Include="Google.Cloud.PubSub.V1" Version="1.0.0-beta13" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
   </ItemGroup>
 
@@ -18,5 +20,9 @@
 
   <ItemGroup>
     <Content Include="app.yaml" CopyToOutputDirecetory="Always" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Converter.Services.OpenXml\Converter.Services.OpenXml.csproj" />
   </ItemGroup>
 </Project>
