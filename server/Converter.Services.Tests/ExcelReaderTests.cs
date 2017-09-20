@@ -13,7 +13,7 @@ namespace Converter.Services.Tests
             // open test excel file
             string excelFile = Path.Combine(
                 Directory.GetCurrentDirectory(),
-                "");
+                "TestBook1.xlsx");
 
             using (var stream = new FileStream(path: excelFile, mode: FileMode.Open))
             {
