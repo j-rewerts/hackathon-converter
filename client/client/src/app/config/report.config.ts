@@ -9,7 +9,7 @@ export interface IReportConfig {
 }
 
 export class ReportConfig implements IReportConfig {
-  nameLabel: string = 'Name';
+  nameLabel: string = 'File Name';
   statusLabel: string = 'Status';
   issuesLabel: string = 'Issues';
   issueColumns: ITdDataTableColumn[] = [

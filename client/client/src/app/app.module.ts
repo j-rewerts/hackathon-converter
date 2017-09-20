@@ -1,19 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, Type } from '@angular/core';
+import { HttpModule } from '@angular/http';
 import { MdCardModule } from '@angular/material';
 import { CovalentExpansionPanelModule, CovalentDataTableModule } from '@covalent/core';
-import { CovalentHttpModule } from '@covalent/http';
+import { CovalentHttpModule, IHttpInterceptor } from '@covalent/http';
 import { CovalentHighlightModule } from '@covalent/highlight';
 import { CovalentMarkdownModule } from '@covalent/markdown';
-// import { CovalentDynamicFormsModule } from '@covalent/dynamic-forms';
 
+import { CustomInterceptor } from './sevices/http.interceptor';
+import { ReportService } from './sevices/report.service';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SummaryComponent } from './features/report/summary/summary.component';
 import { IssuesComponent } from './features/report/issues/issues.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 
+const httpInterceptorProviders: Type<IHttpInterceptor>[] = [
+  CustomInterceptor
+];
 
 @NgModule({
   declarations: [
@@ -31,10 +36,15 @@ import { PageNotFoundComponent } from './page-not-found.component';
     CovalentDataTableModule,
     CovalentHttpModule.forRoot(),
     CovalentHighlightModule,
-    CovalentMarkdownModule
-    // CovalentDynamicFormsModule
+    CovalentMarkdownModule,
+    HttpModule,
+    CovalentHttpModule.forRoot({
+      interceptors: [{
+        interceptor: CustomInterceptor, paths: ['**'],
+      }],
+    })
   ],
-  providers: [],
+  providers: [ReportService, httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
