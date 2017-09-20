@@ -9,5 +9,6 @@ namespace Converter.Services.Data.Models
         public string Name { get; set; }
         public int RowCount { get; set; }
         public int CellCount { get; set; }
+        public int FormulaCount { get; set; }
     }
 }
