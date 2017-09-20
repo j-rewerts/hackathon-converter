@@ -9,9 +9,10 @@ using Converter.Services.Data.Enums;
 namespace Converter.Services.Data.Migrations
 {
     [DbContext(typeof(AnalysisContext))]
-    partial class AnalysisContextModelSnapshot : ModelSnapshot
+    [Migration("20170920151248_AddMessageColumnToIssue")]
+    partial class AddMessageColumnToIssue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2");
@@ -34,26 +35,6 @@ namespace Converter.Services.Data.Migrations
                     b.HasIndex("WorkbookID");
 
                     b.ToTable("Analysis");
-                });
-
-            modelBuilder.Entity("Converter.Services.Data.Models.Cell", b =>
-                {
-                    b.Property<int>("CellID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Column");
-
-                    b.Property<int>("Row");
-
-                    b.Property<string>("Value");
-
-                    b.Property<int?>("WorksheetID");
-
-                    b.HasKey("CellID");
-
-                    b.HasIndex("WorksheetID");
-
-                    b.ToTable("Cell");
                 });
 
             modelBuilder.Entity("Converter.Services.Data.Models.IssueBase", b =>
@@ -135,9 +116,11 @@ namespace Converter.Services.Data.Migrations
                 {
                     b.HasBaseType("Converter.Services.Data.Models.IssueBase");
 
-                    b.Property<int?>("CellID");
+                    b.Property<string>("CellReference");
 
-                    b.HasIndex("CellID");
+                    b.Property<int?>("WorksheetID");
+
+                    b.HasIndex("WorksheetID");
 
                     b.ToTable("Issue");
 
@@ -161,13 +144,6 @@ namespace Converter.Services.Data.Migrations
                         .HasForeignKey("WorkbookID");
                 });
 
-            modelBuilder.Entity("Converter.Services.Data.Models.Cell", b =>
-                {
-                    b.HasOne("Converter.Services.Data.Models.Worksheet", "Worksheet")
-                        .WithMany()
-                        .HasForeignKey("WorksheetID");
-                });
-
             modelBuilder.Entity("Converter.Services.Data.Models.IssueBase", b =>
                 {
                     b.HasOne("Converter.Services.Data.Models.Analysis")
@@ -188,9 +164,9 @@ namespace Converter.Services.Data.Migrations
 
             modelBuilder.Entity("Converter.Services.Data.Models.CellIssue", b =>
                 {
-                    b.HasOne("Converter.Services.Data.Models.Cell", "Cell")
+                    b.HasOne("Converter.Services.Data.Models.Worksheet", "Worksheet")
                         .WithMany()
-                        .HasForeignKey("CellID");
+                        .HasForeignKey("WorksheetID");
                 });
         }
     }

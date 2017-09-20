@@ -14,9 +14,11 @@ namespace Converter.Services.Data
         { }
 
         public DbSet<Analysis> Analysis { get; set; }
-        public DbSet<Issue> Issue { get; set; }
+        public DbSet<Cell> Cell { get; set; }
+        public DbSet<CellIssue> CellIssue { get; set; }        
         public DbSet<IssueType> IssueType { get; set; }
         public DbSet<Workbook> Workbook { get; set; }
+        public DbSet<WorkbookIssue> WorkbookIssue { get; set; }
         public DbSet<Worksheet> Worksheet { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
