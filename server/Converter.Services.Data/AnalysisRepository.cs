@@ -109,7 +109,7 @@ namespace Converter.Services.Data
 
         public AnalysisDto RetrieveAnalysisById(int analysisId)
         {
-            var analysis = _context.Analysis.ProjectTo<AnalysisDto>().FirstOrDefault(x => x.AnalysisID == analysisId);
+            var analysis = _context.Analysis.ProjectTo<AnalysisDto>().FirstOrDefault(x => x.Id == analysisId);
             if (analysis is null)
                 return new AnalysisDto();
             return analysis;

@@ -5,9 +5,9 @@ namespace Converter.Services.Data.DTO
 {
     public class AnalysisDto
     {
-        public int AnalysisID { get; set; }
-        public AnalysisStatus AnalysisStatus { get; set; }
-        public string WorkbookName { get; set; }
+        public int Id { get; set; }
+        public AnalysisStatus Status { get; set; }
+        public string FileName { get; set; }
         public List<IssueDto> Issues { get; set; }
     }
 }
