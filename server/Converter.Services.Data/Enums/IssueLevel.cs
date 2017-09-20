@@ -1,6 +1,6 @@
 ﻿namespace Converter.Services.Data.Enums
 {
-    internal enum IssueLevel
+    public enum IssueLevel
     {
         Workbook,
         Cell

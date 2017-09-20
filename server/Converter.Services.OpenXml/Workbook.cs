@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Converter.Services.Data.Models
+namespace Converter.Services.OpenXml
 {
-    internal class Workbook
+    public class Workbook
     {
-        [Key]
         public int WorkbookID { get; set; }
         public string Name { get; set; }
         public string GoogleFileID { get; set; }
+        public bool HasExternalConnections { get; set; }
         public bool HasCustomCode { get; set; }
         public bool HasDataConnections { get; set; }
-
-
-        public List<Worksheet> Worksheets { get; set; }
     }
+
 }
