@@ -20,12 +20,12 @@ namespace Converter.Services.Data
 
         private readonly AnalysisContext _context;
 
-        public async void StartAnalysisAsync(string analysisId)
+        public async Task<int> StartAnalysisAsync(string googleFileId)
         {
             throw new NotImplementedException("This function needs to be implemented.");
         }
 
-        public async void CompleteAnalysisAsync(string analysisId)
+        public async Task<int> CompleteAnalysisAsync(int analysisId)
         {
             throw new NotImplementedException("This function needs to be implemented.");
         }
