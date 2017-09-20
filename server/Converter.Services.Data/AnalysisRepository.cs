@@ -1,6 +1,8 @@
-﻿using Converter.Services.Data.Models;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
-using System;
+
+using Converter.Services.Data.Models;
 
 namespace Converter.Services.Data
 {
@@ -18,16 +20,6 @@ namespace Converter.Services.Data
 
         private readonly AnalysisContext _context;
 
-        public async Task<int> AddAnalysisAsync(string fileId)
-        {
-            var analysis = new Analysis();
-            // TODO; set workbook properties here (maybe just fileId?)
-            _context.Analysis.Add(analysis);
-            await _context.SaveChangesAsync();
-
-            return analysis.AnalysisID;
-        }
-
         public async void StartAnalysisAsync(string analysisId)
         {
             throw new NotImplementedException("This function needs to be implemented.");
@@ -38,19 +30,66 @@ namespace Converter.Services.Data
             throw new NotImplementedException("This function needs to be implemented.");
         }
 
-        public async void AddWorkbookIssueAsync(string analysisId, string issueTypeId, string message)
+        public async Task<int> AddCellIssueAsync(int analysisId, int issueTypeId, int cellId, string message)
         {
-            throw new NotImplementedException("This function needs to be implemented.");
+            var analysis = _context.Analysis.FirstOrDefault(x => x.AnalysisID == analysisId);
+            if (analysis is null)
+                throw new Exception("Invalid Analysis ID provided.");
+            var issueType = _context.IssueType.FirstOrDefault(x => x.IssueTypeID == issueTypeId);
+            if (issueType is null)
+                throw new Exception("Invalid Issue Type ID provided.");
+            var cell = _context.Cell.FirstOrDefault(x => x.CellID == cellId);
+            if (cell is null)
+                throw new Exception("Invalid Cell ID provided.");
+
+            var cellIssue = new CellIssue
+            {
+                IssueType = issueType,
+                Message = message,
+                Cell = cell
+            };
+            analysis.Issues.Add(cellIssue);
+
+            await _context.SaveChangesAsync();
+            return cellIssue.IssueID;
         }
 
-        public async void AddWorksheetAsync(string workbookId, string name, int rowCount, int cellCount)
+        public async Task<int> AddWorkbookIssueAsync(int analysisId, int issueTypeId, string message)
         {
-            throw new NotImplementedException("This function needs to be implemented.");
+            var analysis = _context.Analysis.FirstOrDefault(x => x.AnalysisID == analysisId);
+            if (analysis is null)
+                throw new Exception("Invalid Analysis ID provided.");
+            var issueType = _context.IssueType.FirstOrDefault(x => x.IssueTypeID == issueTypeId);
+            if (issueType is null)
+                throw new Exception("Invalid Issue Type ID provided.");
+
+            var workbookIssue = new WorkbookIssue
+            {
+                IssueType = issueType,
+                Message = message
+            };
+            analysis.Issues.Add(workbookIssue);
+
+            await _context.SaveChangesAsync();
+            return workbookIssue.IssueID;
         }
 
-        public async void AddCellIssueAsync(string analysisId, string issueTypeId, string cellReference, string worksheet, string message)
+        public async Task<int> AddWorksheetAsync(int workbookId, string name, int rowCount, int cellCount)
         {
-            throw new NotImplementedException("This function needs to be implemented.");
-        }
+            var workbook = _context.Workbook.FirstOrDefault(x => x.WorkbookID == workbookId);
+            if (workbook is null)
+                throw new Exception("Invalid Workbook ID provided.");
+
+            var worksheet = new Worksheet
+            {
+                Name = name,
+                RowCount = rowCount,
+                CellCount = cellCount
+            };
+            workbook.Worksheets.Add(worksheet);
+
+            await _context.SaveChangesAsync();
+            return worksheet.WorksheetID;
+        }        
     }
 }
