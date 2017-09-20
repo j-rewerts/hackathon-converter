@@ -17,16 +17,19 @@ namespace Converter.Services.Data
         /// </summary>
         /// <param name="context"></param>
         /// <remarks>context is typically provided through dependency injection</remarks>
-        public AnalysisRepository(AnalysisContext context)
+        public AnalysisRepository(IAnalysisContext context)
         {
             this._context = context;
         }
 
-        private readonly AnalysisContext _context;
+        private readonly IAnalysisContext _context;
 
         public async Task<int> StartAnalysisAsync(string googleFileId)
         {
-            throw new NotImplementedException("This function needs to be implemented.");
+            var analysis = _context.Analysis.Find(googleFileId);
+            analysis.AnalysisStatus = Enums.AnalysisStatus.InProgress;
+            await _context.SaveChangesAsync();
+            return analysis.AnalysisID;
         }
 
         public async Task<int> CompleteAnalysisAsync(int analysisId)
