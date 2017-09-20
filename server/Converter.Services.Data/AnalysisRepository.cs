@@ -7,6 +7,7 @@ using AutoMapper.QueryableExtensions;
 
 using Converter.Services.Data.Models;
 using Converter.Services.Data.DTO;
+using Converter.Services.Data.Enums;
 
 namespace Converter.Services.Data
 {
@@ -32,9 +33,16 @@ namespace Converter.Services.Data
             return analysis.AnalysisID;
         }
 
-        public async Task<int> CompleteAnalysisAsync(int analysisId)
+        public async Task CompleteAnalysisAsync(int analysisId)
         {
-            throw new NotImplementedException("This function needs to be implemented.");
+            var analysis = _context.Analysis.FirstOrDefault(x => x.AnalysisID == analysisId);
+            if (analysis is null)
+                throw new Exception("Invalid Analysis ID provided.");
+
+            analysis.AnalysisStatus = AnalysisStatus.Completed;
+            analysis.EndDateTime = DateTime.Now;
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<int> AddCellIssueAsync(int analysisId, int issueTypeId, int cellId, string message)
