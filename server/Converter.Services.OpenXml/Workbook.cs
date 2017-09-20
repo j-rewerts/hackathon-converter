@@ -12,6 +12,8 @@ namespace Converter.Services.OpenXml
         public bool HasExternalConnections { get; set; }
         public bool HasCustomCode { get; set; }
         public bool HasDataConnections { get; set; }
+        public bool HasExternalHyperLinks { get; set; }
+        public bool HasExternalRelationships { get; set; }
     }
 
 }
