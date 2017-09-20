@@ -43,6 +43,11 @@ namespace Converter.Services.Data
             throw new NotImplementedException("This function needs to be implemented.");
         }
 
+        public async void AddWorksheetAsync(string workbookId, string name, int rowCount, int cellCount)
+        {
+            throw new NotImplementedException("This function needs to be implemented.");
+        }
+
         public async void AddCellIssueAsync(string analysisId, string issueTypeId, string cellReference, string worksheet, string message)
         {
             throw new NotImplementedException("This function needs to be implemented.");
