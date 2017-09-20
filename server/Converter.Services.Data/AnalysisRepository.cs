@@ -25,6 +25,7 @@ namespace Converter.Services.Data
             var analysis = _context.Analysis.Find(googleFileId);
             analysis.AnalysisStatus = Enums.AnalysisStatus.InProgress;
             await _context.SaveChangesAsync();
+            return analysis.AnalysisID;
         }
 
         public async Task<int> CompleteAnalysisAsync(int analysisId)
