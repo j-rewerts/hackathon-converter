@@ -11,7 +11,8 @@ namespace Converter.Services.Data
         public static void AddAnalysisRepository(this IServiceCollection services,
             Action<DbContextOptionsBuilder> options)
         {
-            services.AddDbContext<AnalysisContext>(o => options(o));
+            //services.AddDbContext<AnalysisContext>(o => options(o));
+            services.AddScoped<IAnalysisContext, AnalysisContext>();
             services.AddScoped<IAnalysisRepository, AnalysisRepository>();
         }
     }
