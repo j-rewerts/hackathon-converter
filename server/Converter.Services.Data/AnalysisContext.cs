@@ -14,6 +14,7 @@ namespace Converter.Services.Data
         { }
 
         public DbSet<Analysis> Analysis { get; set; }
+        public DbSet<Cell> Cell { get; set; }
         public DbSet<CellIssue> CellIssue { get; set; }        
         public DbSet<IssueType> IssueType { get; set; }
         public DbSet<Workbook> Workbook { get; set; }

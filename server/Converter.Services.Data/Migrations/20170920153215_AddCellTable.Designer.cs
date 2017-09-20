@@ -9,9 +9,10 @@ using Converter.Services.Data.Enums;
 namespace Converter.Services.Data.Migrations
 {
     [DbContext(typeof(AnalysisContext))]
-    partial class AnalysisContextModelSnapshot : ModelSnapshot
+    [Migration("20170920153215_AddCellTable")]
+    partial class AddCellTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2");
