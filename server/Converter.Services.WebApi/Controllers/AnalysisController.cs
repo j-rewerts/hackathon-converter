@@ -51,7 +51,7 @@ namespace Converter.Services.WebApi.Controllers
             int analysisId;
             try
             {
-                analysisId = await _repository.AddAnalysisAsync(id);
+                analysisId = await _repository.StartAnalysisAsync(id);
             }
             catch (Exception err)
             {
