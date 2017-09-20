@@ -28,7 +28,7 @@ namespace Converter.Services.TaskRunner
         private readonly IConfigurationRoot _configuration;
         private readonly IAnalysisRepository repository;
 
-        public void Analyze(string googleFileId)
+        public void Analyze(string googleFileId, int analysisId)
         {
             try
             {
@@ -42,7 +42,10 @@ namespace Converter.Services.TaskRunner
                     }
 
                     // now that we've read the workbook we can save the analysis results
-                    var worksheets = reader.GetWorksheets();
+                    foreach (var sheetInfo in reader.GetWorksheets())
+                    {
+                        //repository.AddWorksheetAsync(analysisId, sheetInfo.Name, sheetInfo.RowCount, sheetInfo.ColumnCount * sheetInfo.RowCount);
+                    }
                 });
             }
             catch (Exception err)

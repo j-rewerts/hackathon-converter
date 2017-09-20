@@ -10,7 +10,7 @@ namespace Converter.Services.TaskRunner
 
         public void Initialize(ConfigurableHttpClient httpClient)
         {
-          //  httpClient.
+            // TODO: add the OAuth token to the httpClient
             throw new NotImplementedException();
         }
     }
