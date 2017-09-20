@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using AutoMapper.QueryableExtensions;
+
 using Converter.Services.Data.Models;
+using Converter.Services.Data.DTO;
 
 namespace Converter.Services.Data
 {
@@ -90,6 +94,22 @@ namespace Converter.Services.Data
 
             await _context.SaveChangesAsync();
             return worksheet.WorksheetID;
-        }        
+        }
+
+        public List<AnalysisDto> RetrieveAnalysises()
+        {
+            var analysises = _context.Analysis.ProjectTo<AnalysisDto>().ToList();
+            if (analysises is null)
+                return new List<AnalysisDto>();
+            return analysises;
+        }
+
+        public AnalysisDto RetrieveAnalysisById(int analysisId)
+        {
+            var analysis = _context.Analysis.ProjectTo<AnalysisDto>().FirstOrDefault(x => x.AnalysisID == analysisId);
+            if (analysis is null)
+                return new AnalysisDto();
+            return analysis;
+        }
     }
 }

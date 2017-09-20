@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Converter.Services.Data;
+
 using Google.Cloud.PubSub.V1;
+
+using Converter.Services.Data;
+using Converter.Services.Data.Maps;
 
 namespace Converter.Services.WebApi
 {
@@ -36,7 +37,7 @@ namespace Converter.Services.WebApi
             services.AddAnalysisRepository(options =>
             {
                 // TODO: configure database options (like connection string)
-
+                MappingConfig.RegisterMaps();
             });
 
             if (!_env.IsDevelopment())

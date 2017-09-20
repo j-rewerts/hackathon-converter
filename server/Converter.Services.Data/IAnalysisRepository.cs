@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Converter.Services.Data.DTO;
 
 namespace Converter.Services.Data
 {
@@ -9,5 +12,7 @@ namespace Converter.Services.Data
         Task<int> AddCellIssueAsync(int analysisId, int issueTypeId, int cellId, string message);
         Task<int> AddWorkbookIssueAsync(int analysisId, int issueTypeId, string message);
         Task<int> AddWorksheetAsync(int workbookId, string name, int rowCount, int cellCount);
+        List<AnalysisDto> RetrieveAnalysises();
+        AnalysisDto RetrieveAnalysisById(int analysisId);
     }
 }

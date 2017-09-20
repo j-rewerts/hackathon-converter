@@ -10,7 +10,7 @@ namespace Converter.Services.Tests
         public void StartAnalysisTest()
         {
             IAnalysisContext context = new MockAnalysisContext();
-            AnalysisRepository repo = new AnalysisRepository(context);
+            //AnalysisRepository repo = new AnalysisRepository(context);
         }
     }
 }
