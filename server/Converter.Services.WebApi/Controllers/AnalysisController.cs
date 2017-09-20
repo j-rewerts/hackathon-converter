@@ -1,12 +1,17 @@
 ﻿using Converter.Services.Data;
+using Converter.Services.OpenXml;
+using Converter.Services.TaskRunner;
 using Google.Cloud.PubSub.V1;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Converter.Services.WebApi.Controllers
@@ -16,22 +21,20 @@ namespace Converter.Services.WebApi.Controllers
     [Route("[controller]")]
     public class AnalysisController : Controller
     {
-        public AnalysisController(IConfigurationRoot configuration,
-            
+        public AnalysisController(IHostingEnvironment env,
             IAnalysisRepository repository,
-            SimplePublisher publisher, 
+            ExcelAnalyzer excelAnalyzer,
             ILogger<AnalysisController> logger)
         {
-            _configuration = configuration;
+            _env = env;
             _repository = repository;
-            _publisher = publisher;
+            _excelAnalyzer = excelAnalyzer;
             _logger = logger;
         }
 
-        private readonly IConfigurationRoot _configuration;
-
+        private readonly IHostingEnvironment _env;
         private readonly IAnalysisRepository _repository;
-        private readonly SimplePublisher _publisher;
+        private readonly ExcelAnalyzer _excelAnalyzer;
         private readonly ILogger<AnalysisController> _logger;
 
         /// <summary>
@@ -57,24 +60,17 @@ namespace Converter.Services.WebApi.Controllers
                 throw err;
             }
 
-            try
+            // start analyzing immediately on new thread
+            ThreadPool.QueueUserWorkItem(s =>
             {
-               // await SendPubStartAnalysisMessage(analysisId);
-            }
-            catch (Exception err)
-            {
-                // TODO: create proper EventIds for logging
-                _logger?.LogError(0, err, "Unable to save trigger task runner to start analysis");
-                throw err;
-            }
+                _excelAnalyzer.Analyze(id);
+            });            
+
+
             return Ok();
         }
 
-        private async Task<string> SendPubStartAnalysisMessage(int id)
-        {
-            var msg = JsonConvert.SerializeObject(new { message = "StartAnalysis", id = id });
-            return await _publisher.PublishAsync(msg);
-        }
+
 
 
         /// <summary>

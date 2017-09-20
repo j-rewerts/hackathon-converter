@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Converter.Services.Data;
 using Google.Cloud.PubSub.V1;
+using Converter.Services.TaskRunner;
 
 namespace Converter.Services.WebApi
 {
@@ -39,24 +40,7 @@ namespace Converter.Services.WebApi
 
             });
 
-            if (!_env.IsDevelopment())
-            {
-
-                // configure publisher
-                string projectId = Configuration["Google:ProjectId"];
-                if (string.IsNullOrWhiteSpace(projectId))
-                    throw new InvalidOperationException("Unable to get the projectId from configuration");
-                var topicNameString = ANALYSIS_TOPIC_NAME;
-                var publisherClient = PublisherClient.Create();
-                var topicName = new TopicName(projectId, topicNameString);
-                // ensure the topic exists (is there a better way?)
-                try { publisherClient.CreateTopic(topicName); }
-                catch (Grpc.Core.RpcException e) {  /* topic already exists */ }
-
-                var publisher = SimplePublisher.Create(
-                    topicName, new[] { publisherClient });
-                services.AddSingleton(publisher);
-            }
+            services.AddSingleton<ExcelAnalyzer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
