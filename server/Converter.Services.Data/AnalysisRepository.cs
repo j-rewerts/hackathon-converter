@@ -1,5 +1,6 @@
 ﻿using Converter.Services.Data.Models;
 using System.Threading.Tasks;
+using System;
 
 namespace Converter.Services.Data
 {
@@ -25,6 +26,26 @@ namespace Converter.Services.Data
             await _context.SaveChangesAsync();
 
             return analysis.AnalysisID;
+        }
+
+        public async void StartAnalysisAsync(string analysisId)
+        {
+            throw new NotImplementedException("This function needs to be implemented.");
+        }
+
+        public async void CompleteAnalysisAsync(string analysisId)
+        {
+            throw new NotImplementedException("This function needs to be implemented.");
+        }
+
+        public async void AddWorkbookIssueAsync(string analysisId, string issueTypeId, string message)
+        {
+            throw new NotImplementedException("This function needs to be implemented.");
+        }
+
+        public async void AddCellIssueAsync(string analysisId, string issueTypeId, string cellReference, string worksheet, string message)
+        {
+            throw new NotImplementedException("This function needs to be implemented.");
         }
     }
 }
