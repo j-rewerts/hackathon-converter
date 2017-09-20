@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Converter.Services.OpenXml\Converter.Services.OpenXml.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="TestBook1.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
