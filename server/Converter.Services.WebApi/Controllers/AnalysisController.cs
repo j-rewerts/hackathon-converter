@@ -1,5 +1,9 @@
 ﻿using Converter.Services.Data;
+using Google.Cloud.PubSub.V1;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +16,23 @@ namespace Converter.Services.WebApi.Controllers
     [Route("[controller]")]
     public class AnalysisController : Controller
     {
-        public AnalysisController(IAnalysisRepository repository)
+        public AnalysisController(IConfigurationRoot configuration,
+            
+            IAnalysisRepository repository,
+            SimplePublisher publisher, 
+            ILogger<AnalysisController> logger)
         {
-            this._repository = repository;
+            _configuration = configuration;
+            _repository = repository;
+            _publisher = publisher;
+            _logger = logger;
         }
 
+        private readonly IConfigurationRoot _configuration;
+
         private readonly IAnalysisRepository _repository;
+        private readonly SimplePublisher _publisher;
+        private readonly ILogger<AnalysisController> _logger;
 
         /// <summary>
         ///  1. get the file
@@ -30,11 +45,35 @@ namespace Converter.Services.WebApi.Controllers
         public async Task<IActionResult> Start(string id)
         {
 
-            var analysisId = await _repository.AddAnalysisAsync(id);
+            int analysisId;
+            try
+            {
+                analysisId = await _repository.AddAnalysisAsync(id);
+            }
+            catch (Exception err)
+            {
+                // TODO: create proper EventIds for logging
+                _logger?.LogError(0, err, "Unable to save new analysis to database");
+                throw err;
+            }
 
-
-
+            try
+            {
+                await SendPubStartAnalysisMessage(analysisId);
+            }
+            catch (Exception err)
+            {
+                // TODO: create proper EventIds for logging
+                _logger?.LogError(0, err, "Unable to save trigger task runner to start analysis");
+                throw err;
+            }
             return Ok();
+        }
+
+        private async Task<string> SendPubStartAnalysisMessage(int id)
+        {
+            var msg = JsonConvert.SerializeObject(new { message = "StartAnalysis", id = id });
+            return await _publisher.PublishAsync(msg);
         }
 
 
