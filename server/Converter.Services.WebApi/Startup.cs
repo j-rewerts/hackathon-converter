@@ -22,6 +22,7 @@ namespace Converter.Services.WebApi
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+            this._env = env;
         }
         private const string ANALYSIS_TOPIC_NAME = "ConverterAnalysis";
         public IConfigurationRoot Configuration { get; }
