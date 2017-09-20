@@ -25,6 +25,7 @@ namespace Converter.Services.WebApi
         }
         private const string ANALYSIS_TOPIC_NAME = "ConverterAnalysis";
         public IConfigurationRoot Configuration { get; }
+        private readonly IHostingEnvironment _env;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -34,22 +35,27 @@ namespace Converter.Services.WebApi
             services.AddAnalysisRepository(options =>
             {
                 // TODO: configure database options (like connection string)
+
             });
 
-            // configure publisher
-            string projectId = Configuration["Google:ProjectId"];
-            if (string.IsNullOrWhiteSpace(projectId))
-                throw new InvalidOperationException("Unable to get the projectId from configuration");
-            var topicNameString = ANALYSIS_TOPIC_NAME;
-            var publisherClient = PublisherClient.Create();
-            var topicName = new TopicName(projectId, topicNameString);
-            // ensure the topic exists (is there a better way?)
-            try { publisherClient.CreateTopic(topicName); }
-            catch (Grpc.Core.RpcException e) {  /* topic already exists */ }
+            if (!_env.IsDevelopment())
+            {
 
-            var publisher = SimplePublisher.Create(
-                topicName, new[] { publisherClient });
-            services.AddSingleton(publisher);
+                // configure publisher
+                string projectId = Configuration["Google:ProjectId"];
+                if (string.IsNullOrWhiteSpace(projectId))
+                    throw new InvalidOperationException("Unable to get the projectId from configuration");
+                var topicNameString = ANALYSIS_TOPIC_NAME;
+                var publisherClient = PublisherClient.Create();
+                var topicName = new TopicName(projectId, topicNameString);
+                // ensure the topic exists (is there a better way?)
+                try { publisherClient.CreateTopic(topicName); }
+                catch (Grpc.Core.RpcException e) {  /* topic already exists */ }
+
+                var publisher = SimplePublisher.Create(
+                    topicName, new[] { publisherClient });
+                services.AddSingleton(publisher);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
