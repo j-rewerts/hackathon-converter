@@ -1,13 +1,16 @@
 <md-card>
-  <div></div>
+  <div class="list-header">
+    <div class="column-name">{{reportConfig.nameLabel}}</div>
+    <div class="column-status">{{reportConfig.statusLabel}}</div>
+  </div>
   <ng-template let-item let-i="index" ngFor [ngForOf]="fileList">
     <td-expansion-panel [label]="item.name" [sublabel]="item.status">
-      <div *ngIf="!item.issues || item.issues.length === 0">No Issues</div>
+      <div *ngIf="!item.issues || item.issues.length === 0">{{reportConfig.noIssueMessage}}</div>
       <div *ngIf="item.issues && item.issues.length > 0">
         <!--<div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">-->
-          <!--<span class="push-left-sm">-->
-            <!--<span class="md-title">{{reportConfig.issuesLabel}}</span>-->
-          <!--</span>-->
+        <!--<span class="push-left-sm">-->
+        <!--<span class="md-title">{{reportConfig.issuesLabel}}</span>-->
+        <!--</span>-->
         <!--</div>-->
         <span class="md-title">{{reportConfig.issuesLabel}}</span>
         <md-divider></md-divider>
@@ -18,5 +21,6 @@
         </td-data-table>
       </div>
     </td-expansion-panel>
+
   </ng-template>
 </md-card>

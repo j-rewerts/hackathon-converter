@@ -5,6 +5,7 @@ export interface IReportConfig {
   statusLabel: string;
   issuesLabel: string;
   issueColumns: ITdDataTableColumn[];
+  noIssueMessage: string;
 }
 
 export class ReportConfig implements IReportConfig {
@@ -15,4 +16,5 @@ export class ReportConfig implements IReportConfig {
     {name: 'type', label: 'Type'},
     {name: 'message', label: 'Message'}
   ];
+  noIssueMessage: string = 'No Issues';
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IFile } from '../interfaces/report.interface';
 import { IReportConfig, ReportConfig } from 'app/config/report.config';
 
@@ -24,7 +24,7 @@ const FILES: IFile[] = [
   styleUrls: ['./summary.component.css']
 })
 
-export class SummaryComponent implements OnInit {
+export class SummaryComponent {
 
   fileList = FILES;
   selectedFile: IFile;
@@ -34,8 +34,6 @@ export class SummaryComponent implements OnInit {
     this.reportConfig = new ReportConfig();
   }
 
-  ngOnInit() {
-  }
   onSelect(file: IFile): void {
     this.selectedFile = file;
   }
