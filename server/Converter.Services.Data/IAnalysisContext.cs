@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Converter.Services.Data
 {
@@ -15,5 +17,7 @@ namespace Converter.Services.Data
         DbSet<Workbook> Workbook { get; set; }
         DbSet<WorkbookIssue> WorkbookIssue { get; set; }
         DbSet<Worksheet> Worksheet { get; set; }
+
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }
