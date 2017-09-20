@@ -8,6 +8,8 @@ namespace Converter.Services.Data.Models
     {
         [Key]
         public int IssueID { get; set; }
+        public string Message { get; set; }
+
         public IssueType IssueType { get; set; }
     }
 }
