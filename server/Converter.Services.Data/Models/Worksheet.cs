@@ -8,6 +8,7 @@ namespace Converter.Services.Data.Models
         public int WorksheetID { get; set; }
         public string Name { get; set; }
         public int RowCount { get; set; }
+        public int ColumnCount { get; set; }
         public int CellCount { get; set; }
         public int FormulaCount { get; set; }
     }
