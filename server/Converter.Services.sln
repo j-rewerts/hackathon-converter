@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Converter.Services.Data", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Converter.Services.OpenXml", "Converter.Services.OpenXml\Converter.Services.OpenXml.csproj", "{E4E6C3CB-3484-49B1-8B7E-87D3CA36F065}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converter.Services.TaskRunner", "Converter.Services.TaskRunner\Converter.Services.TaskRunner.csproj", "{40AE19EC-F1C9-431F-8F0F-DC1C20627E2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Converter.Services.TaskRunner", "Converter.Services.TaskRunner\Converter.Services.TaskRunner.csproj", "{40AE19EC-F1C9-431F-8F0F-DC1C20627E2B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2908CE1F-DBC7-4804-AC02-E2AE312B598A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converter.Services.Tests", "Converter.Services.Tests\Converter.Services.Tests.csproj", "{08BE4DF7-D96B-4478-82BE-792A7EE9EC84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +37,16 @@ Global
 		{40AE19EC-F1C9-431F-8F0F-DC1C20627E2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40AE19EC-F1C9-431F-8F0F-DC1C20627E2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40AE19EC-F1C9-431F-8F0F-DC1C20627E2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08BE4DF7-D96B-4478-82BE-792A7EE9EC84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08BE4DF7-D96B-4478-82BE-792A7EE9EC84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08BE4DF7-D96B-4478-82BE-792A7EE9EC84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08BE4DF7-D96B-4478-82BE-792A7EE9EC84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{08BE4DF7-D96B-4478-82BE-792A7EE9EC84} = {2908CE1F-DBC7-4804-AC02-E2AE312B598A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6EE9ED62-9930-448F-8A6E-C68EE250AC26}

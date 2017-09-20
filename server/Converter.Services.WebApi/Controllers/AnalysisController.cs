@@ -59,7 +59,7 @@ namespace Converter.Services.WebApi.Controllers
 
             try
             {
-                await SendPubStartAnalysisMessage(analysisId);
+               // await SendPubStartAnalysisMessage(analysisId);
             }
             catch (Exception err)
             {
