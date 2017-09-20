@@ -5,6 +5,7 @@ using System.Text;
 using Converter.Services.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Converter.Services.Tests
 {
@@ -18,9 +19,10 @@ namespace Converter.Services.Tests
         public DbSet<WorkbookIssue> WorkbookIssue { get; set; }
         public DbSet<Worksheet> Worksheet { get; set; }
 
-        public async Task SaveChangesAync()
+        public async Task<int> SaveChangesAsync(CancellationToken cToken)
         {
             // mock implementation does nothing
+            return -1;
         }
 
     }
