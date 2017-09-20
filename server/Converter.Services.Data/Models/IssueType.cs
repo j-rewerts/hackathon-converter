@@ -1,5 +1,5 @@
-﻿using Converter.Services.Data.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Converter.Services.Data.Enums;
 
 namespace Converter.Services.Data.Models
 {
