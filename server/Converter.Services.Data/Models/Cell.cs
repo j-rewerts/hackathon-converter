@@ -6,9 +6,9 @@ namespace Converter.Services.Data.Models
     {
         [Key]
         public int CellID { get; set; }
-        public int Row { get; set; }
-        public int Column { get; set; }
+        public string Reference { get; set; }
         public string Value { get; set; }
+        public string Formula { get; set; }
 
         public Worksheet Worksheet { get; set; }
     }

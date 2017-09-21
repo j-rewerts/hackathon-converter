@@ -1,7 +1,4 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Converter.Services.OpenXml
 {
@@ -9,6 +6,7 @@ namespace Converter.Services.OpenXml
     {
         public string SheetName { get; set; }
         public Cell Cell { get; set; }
+        public string Reference { get; set; }
         public string Formula { get; set; }
         public string Value { get; set; }
     }

@@ -126,6 +126,28 @@ namespace Converter.Services.Data
             await _context.SaveChangesAsync();
         }
 
+        public async Task<int> AddCellAsync(string worksheetName, string reference, string value, string formula)
+        {
+            var worksheet = _context.Worksheet.Include(x => x.Cells).FirstOrDefault(x => x.Name == worksheetName);
+            if (worksheet is null)
+                throw new Exception("Invalid Worksheet Name provided.");
+
+            Cell cell = worksheet.Cells.FirstOrDefault(x => x.Reference == reference); 
+            if (cell is null)
+            {
+                cell = new Cell
+                {
+                    Reference = reference,
+                    Value = value,
+                    Formula = formula
+                };
+                worksheet.Cells.Add(cell);
+                await _context.SaveChangesAsync();
+            }
+
+            return cell.CellID;
+        }
+
         public async Task UpdateWorksheetCountsAsync(string name, int cellCount, int columnCount, int formulaCount, int rowCount)
         {
             var worksheet = _context.Worksheet.FirstOrDefault(x => x.Name == name);

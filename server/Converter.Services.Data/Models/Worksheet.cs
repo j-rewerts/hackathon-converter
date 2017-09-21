@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Converter.Services.Data.Models
 {
@@ -11,5 +12,7 @@ namespace Converter.Services.Data.Models
         public int ColumnCount { get; set; }
         public int CellCount { get; set; }
         public int FormulaCount { get; set; }
+
+        public List<Cell> Cells { get; set; }
     }
 }

@@ -51,9 +51,9 @@ namespace Converter.Services.TaskRunner
             await _repository.AddWorksheetsAsync(workbook.Id, reader.GetSheetNames());
             
             // now that we've read the workbook we can save the analysis results
-            foreach (var sheetInfo in reader.GetWorksheets())
+            foreach (var cellInfo in reader.ReadFile())
             {
-                await _repository.UpdateWorksheetCountsAsync(sheetInfo.Name, (int)sheetInfo.CellCount, 0, 0, 0);
+                await _repository.AddCellAsync(cellInfo.SheetName, cellInfo.Reference, cellInfo.Value, cellInfo.Formula);
             }
         }
 

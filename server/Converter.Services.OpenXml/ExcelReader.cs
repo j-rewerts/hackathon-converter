@@ -66,28 +66,26 @@ namespace Converter.Services.OpenXml
         {
             return this.worksheets;
         }
-        public IEnumerable<CellInfo> ReadFile()//Action<object> onCellValueRead)
+        public IEnumerable<CellInfo> ReadFile()
         {
             DoAdditionalChecks(workbookPart);
-            int sheetIndex = 0;
-            foreach (WorksheetPart worksheetPart in workbookPart.WorksheetParts)
+
+            foreach (WorksheetPart worksheetPart in workbookPart.WorksheetParts.ToList())
             {
-                var sheetProperties = worksheetPart.RootElement.FirstChild as SheetProperties;
-                //string sheetName = sheetProperties.CodeName.Value;
-
-                var worksheet = worksheetPart.Worksheet;
-                // Grab the sheet name each time through your loop
-                string sheetName = workbookPart.Workbook.Descendants<Sheet>().ElementAt(sheetIndex).Name;
-
-                foreach (SheetData sheetData in worksheetPart.Worksheet.Elements<SheetData>())
+                foreach (SheetData sheetData in worksheetPart.Worksheet.Elements<SheetData>().ToList())
                 {
-                    foreach (var cellInfo in GetCellValues(workbookPart, sheetData, sheetName))
+                    string relationshipId = workbookPart.GetIdOfPart(worksheetPart);
+
+                    IEnumerable<Sheet> sheets = workbookPart.Workbook.Sheets.Elements<Sheet>();
+                    var sheet = sheets.FirstOrDefault(s => s.Id.HasValue && s.Id.Value == relationshipId);
+                    var sheetName = sheet.Name;
+
+                    foreach (var cellInfo in GetCellValues(workbookPart, sheetData, sheet.Name))
                         yield return cellInfo;
                 }
-
-                sheetIndex++;
             }
         }
+
         private void DoAdditionalChecks(WorkbookPart workbookPart)
         {
             DetermineExternalConnections(workbookPart);
@@ -138,6 +136,7 @@ namespace Converter.Services.OpenXml
         private IEnumerable<CellInfo> GetCellValues(WorkbookPart workbookPart, 
             SheetData sheetData, string sheetName)
         {
+            string reference = "";
             string text = "";
             string formula = "";
             var worksheetInfo = new Worksheet();
@@ -172,10 +171,11 @@ namespace Converter.Services.OpenXml
                 foreach (Cell c in r.Elements<Cell>())
                 {
                     //c.GetRowIndex();
+                    reference = c.CellReference;
                     text = workbookPart.TryGetStringFromCell(c);// c.CellValue.Text;
                     formula = c.CellFormula?.InnerText;
                     Console.Write(text + " ");
-                    yield return new CellInfo() { Cell = c, Value = text, SheetName = sheetName, Formula = formula };
+                    yield return new CellInfo() { Cell = c, Reference = reference, Value = text, SheetName = sheetName, Formula = formula };
                 }
             }
             this.worksheets.Add(worksheetInfo);
