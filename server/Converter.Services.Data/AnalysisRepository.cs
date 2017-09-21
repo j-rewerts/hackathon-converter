@@ -8,6 +8,7 @@ using AutoMapper.QueryableExtensions;
 using Converter.Services.Data.Models;
 using Converter.Services.Data.DTO;
 using Converter.Services.Data.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace Converter.Services.Data
 {
@@ -107,17 +108,17 @@ namespace Converter.Services.Data
             return worksheet.WorksheetID;
         }
 
-        public List<AnalysisDto> RetrieveAnalysises()
+        public async Task<List<AnalysisDto>> RetrieveAnalysisesAsync()
         {
-            var analysises = _context.Analysis.ProjectTo<AnalysisDto>().ToList();
+            var analysises = await _context.Analysis.ProjectTo<AnalysisDto>().ToListAsync();
             if (analysises is null)
                 return new List<AnalysisDto>();
             return analysises;
         }
 
-        public AnalysisDto RetrieveAnalysisById(int analysisId)
+        public async Task<AnalysisDto> RetrieveAnalysisByIdAsync(int analysisId)
         {
-            var analysis = _context.Analysis.ProjectTo<AnalysisDto>().FirstOrDefault(x => x.Id == analysisId);
+            var analysis = await _context.Analysis.ProjectTo<AnalysisDto>().FirstOrDefaultAsync(x => x.Id == analysisId);
             if (analysis is null)
                 return new AnalysisDto();
             return analysis;
