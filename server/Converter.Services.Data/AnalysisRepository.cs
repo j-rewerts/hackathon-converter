@@ -32,7 +32,7 @@ namespace Converter.Services.Data
             if (workbook is null)
             { 
                 workbook = new Workbook { GoogleFileID = googleFileId };
-                await _context.SaveChangesAsync();
+                _context.Workbook.Add(workbook);
             }
 
             var analysis = _context.Analysis.FirstOrDefault(x => x.Workbook.WorkbookID == workbook.WorkbookID);
@@ -44,6 +44,7 @@ namespace Converter.Services.Data
                     AnalysisStatus = AnalysisStatus.InProgress,
                     StartDateTime = DateTime.Now
                 };
+                _context.Analysis.Add(analysis);
             }
             else
             {
