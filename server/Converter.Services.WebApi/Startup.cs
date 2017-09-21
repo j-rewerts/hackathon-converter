@@ -50,6 +50,7 @@ namespace Converter.Services.WebApi
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }
