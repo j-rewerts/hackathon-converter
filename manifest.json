@@ -1,7 +1,7 @@
 {
     "name": "hackathon converter",
-    "version": "1",
-    "manifest_version": 2,
+    "version": "3",
+    "manifest_version": 3,
     "description": "hackathon converter",
     "container": ["GOOGLE_DRIVE"],
     "api_console_project_id": "902730555629",
