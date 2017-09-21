@@ -16,7 +16,7 @@ namespace Converter.Services.OpenXml
         {
             get
             {
-                return (LastColumn - FirstColumn + 1) * (LastRow - FirstRow + 1 );
+                return (LastColumn - FirstColumn + 1) * (LastRow - FirstRow + 1);
             }
         }
     }

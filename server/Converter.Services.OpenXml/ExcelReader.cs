@@ -15,6 +15,7 @@ namespace Converter.Services.OpenXml
         private Workbook workbook;
         private IList<Worksheet> worksheets;
         private Stream vbaStream;
+        private IList<Connections> connections;
 
         public ExcelReader(Stream file, string GoogleFileID)
         {
@@ -27,6 +28,8 @@ namespace Converter.Services.OpenXml
             workbook.HasExternalHyperLinks = false;
             workbook.HasExternalRelationships = false;
             worksheets = new List<Worksheet>();
+            connections = new List<Connections>();
+            workbook.ExternalRelationships = new HashSet<string>();
 
             try
             {
@@ -122,16 +125,41 @@ namespace Converter.Services.OpenXml
         }
         private void DetermineExternalConnections(WorkbookPart workbookPart)
         {
+            //var extRelationships = new HashSet<string>();
+
             foreach (ExternalWorkbookPart externalWorkbookPart in workbookPart.ExternalWorkbookParts)
             {
-                this.workbook.HasExternalConnections = true;
-                string relationship = externalWorkbookPart.RelationshipType;
+                foreach (ExternalRelationship externalRelationship in externalWorkbookPart.ExternalRelationships)
+                {
+                    string pathName = externalRelationship.Uri.ToString();
+                    if (!workbook.ExternalRelationships.Contains(pathName))
+                        workbook.ExternalRelationships.Add(pathName);
+                }
+
+                workbook.HasExternalConnections = true;
+                //workbook.ExternalRelationships = extRelationships;
             }
         }
         private void DetermineConnections(WorkbookPart workbookPart)
         {
             if (workbookPart.ConnectionsPart != null)
             {
+                ConnectionsPart connectionPart = workbookPart.ConnectionsPart;
+                foreach (Connection connection in connectionPart.Connections)
+                {
+                    var connectionInfo = new Connections
+                    {
+                        Description = connection.Description,
+                        Name = connection.Name,
+                        ConnectionProperties = new ConnectionProperties()
+                    };
+                    DatabaseProperties databaseProperties = connection.DatabaseProperties;
+                    
+                    connectionInfo.ConnectionProperties.Command = databaseProperties.Command.InnerText;
+                    connectionInfo.ConnectionProperties.ConnectionDetails = databaseProperties.Connection.InnerText;
+
+                    this.connections.Add(connectionInfo);
+                }
                 this.workbook.HasDataConnections = true;
             }
         }

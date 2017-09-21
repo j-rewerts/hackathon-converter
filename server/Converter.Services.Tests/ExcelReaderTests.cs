@@ -27,7 +27,7 @@ namespace Converter.Services.Tests
         {
             // open test excel file
             //string excelFile = @"C:\Users\bnaka\Desktop\Finance\3883FormSearchRegistrationDischarge.xlsm";
-            string excelFile = @"C:\Users\bnaka\Desktop\Finance\Linked to excel.xlsx";
+            string excelFile = @"C:\Users\bnaka\Desktop\Finance\Linked to multiple excel.xlsx";
             using (var stream = new FileStream(path: excelFile, mode: FileMode.Open))
             {
                 var reader = new ExcelReader(stream, "ASDASDASD_SADDSA");
