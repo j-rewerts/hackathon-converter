@@ -90,22 +90,31 @@ namespace Converter.Services.Data
             return workbookIssue.IssueID;
         }
 
-        public async Task<int> AddWorksheetAsync(int workbookId, string name, int rowCount, int cellCount)
+        public async Task<int> AddWorksheetAsync(int workbookId, string name)
         {
             var workbook = _context.Workbook.FirstOrDefault(x => x.WorkbookID == workbookId);
             if (workbook is null)
                 throw new Exception("Invalid Workbook ID provided.");
 
-            var worksheet = new Worksheet
-            {
-                Name = name,
-                RowCount = rowCount,
-                CellCount = cellCount
-            };
+            var worksheet = new Worksheet { Name = name };
             workbook.Worksheets.Add(worksheet);
 
             await _context.SaveChangesAsync();
             return worksheet.WorksheetID;
+        }
+
+        public async Task UpdateWorksheetCountsAsync(int worksheetId, int cellCount, int columnCount, int formulaCount, int rowCount)
+        {
+            var worksheet = _context.Worksheet.FirstOrDefault(x => x.WorksheetID == worksheetId);
+            if (worksheet is null)
+                throw new Exception("Invalid Worksheet ID provided.");
+
+            worksheet.CellCount = cellCount;
+            worksheet.ColumnCount = columnCount;
+            worksheet.FormulaCount = formulaCount;
+            worksheet.RowCount = rowCount;
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<AnalysisDto>> RetrieveAnalysisesAsync()
