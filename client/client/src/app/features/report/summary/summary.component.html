@@ -4,32 +4,34 @@
     <div class="column-status">{{reportConfig.statusLabel}}</div>
   </div>
   <ng-template let-item let-i="index" ngFor [ngForOf]="fileList">
-    <a (click)="filePanel.toggle()">
-      <td-expansion-panel #filePanel [label]="item.fileName" [sublabel]="item.status">
-        <div *ngIf="!item.issues || item.issues.length === 0">{{reportConfig.noIssueMessage}}</div>
-        <div *ngIf="item.issues && item.issues.length > 0">
-          <span class="md-title">{{reportConfig.issuesLabel}}</span>
-          <md-divider></md-divider>
-          <td-data-table
-            [data]="item.issues"
-            [columns]="reportConfig.issueColumns"
-            [style.height.px]="200">
-          </td-data-table>
-        </div>
-      </td-expansion-panel>
-    </a>
-  </ng-template>
-</md-card>
 
-<!--<md-card>-->
-  <!--<div class="list-header">-->
-    <!--<div class="column-name">{{reportConfig.nameLabel}}</div>-->
-    <!--<div class="column-status">{{reportConfig.statusLabel}}</div>-->
-  <!--</div>-->
-  <!--<ng-template let-item let-i="index" ngFor [ngForOf]="fileList">-->
-    <!--<td-expansion-panel #filePanel [label]="item.fileName" [sublabel]="item.status">-->
-      <!--<div *ngIf="!item.issues || item.issues.length === 0">{{reportConfig.noIssueMessage}}</div>-->
-      <!--<div *ngIf="item.issues && item.issues.length > 0">-->
+    <md-expansion-panel>
+      <md-expansion-panel-header>
+        <md-panel-title>
+          {{item.fileName}}
+        </md-panel-title>
+        <md-panel-description>
+          {{item.status}}
+        </md-panel-description>
+      </md-expansion-panel-header>
+
+      <div *ngIf="!item.issues || item.issues.length === 0">{{reportConfig.noIssueMessage}}</div>
+      <div *ngIf="item.issues && item.issues.length > 0">
+        <span class="md-title">{{reportConfig.issuesLabel}}</span>
+        <md-divider></md-divider>
+        <td-data-table
+          [data]="item.issues"
+          [columns]="reportConfig.issueColumns"
+          [style.height.px]="200">
+        </td-data-table>
+      </div>
+    </md-expansion-panel>
+
+    <!--<td-expansion-panel [label]="item.fileName" [sublabel]="item.status">-->
+      <!--&lt;!&ndash;<div *ngIf="!item.issues || item.issues.length === 0">{{reportConfig.noIssueMessage}}</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;<div *ngIf="item.issues && item.issues.length > 0">&ndash;&gt;-->
+      <!--<div [hidden]="item.issues && item.issues.length > 0">{{reportConfig.noIssueMessage}}</div>-->
+      <!--<div [hidden]="!item.issues || item.issues.length === 0">-->
         <!--<span class="md-title">{{reportConfig.issuesLabel}}</span>-->
         <!--<md-divider></md-divider>-->
         <!--<td-data-table-->
@@ -39,5 +41,6 @@
         <!--</td-data-table>-->
       <!--</div>-->
     <!--</td-expansion-panel>-->
-  <!--</ng-template>-->
-<!--</md-card>-->
+  </ng-template>
+</md-card>
+
