@@ -127,10 +127,13 @@ namespace Converter.Services.OpenXml
             }
         }
 
-        private IEnumerable<CellInfo> GetCellValues(WorkbookPart workbookPart, SheetData sheetData, string sheetName)
+        private IEnumerable<CellInfo> GetCellValues(WorkbookPart workbookPart, 
+            SheetData sheetData, string sheetName)
         {
             string text = "";
+            string formula = "";
             var worksheetInfo = new Worksheet();
+            worksheetInfo.Name = sheetName;
             foreach (Row r in sheetData.Elements<Row>())
             {
                 if (worksheetInfo.FirstRow == 0)
@@ -162,8 +165,9 @@ namespace Converter.Services.OpenXml
                 {
                     //c.GetRowIndex();
                     text = workbookPart.TryGetStringFromCell(c);// c.CellValue.Text;
+                    formula = c.CellFormula?.InnerText;
                     Console.Write(text + " ");
-                    yield return new CellInfo() { Cell = c, Value = text, SheetName = sheetName };
+                    yield return new CellInfo() { Cell = c, Value = text, SheetName = sheetName, Formula = formula };
                 }
             }
             this.worksheets.Add(worksheetInfo);

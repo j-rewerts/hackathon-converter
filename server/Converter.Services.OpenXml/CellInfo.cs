@@ -9,6 +9,7 @@ namespace Converter.Services.OpenXml
     {
         public string SheetName { get; set; }
         public Cell Cell { get; set; }
+        public string Formula { get; set; }
         public string Value { get; set; }
     }
 }
