@@ -23,12 +23,12 @@ namespace Converter.Services.WebApi.Controllers
     {
         public AnalysisController(IHostingEnvironment env,
             IAnalysisRepository repository,
-            ExcelAnalyzer excelAnalyzer,
+            //ExcelAnalyzer excelAnalyzer,
             ILogger<AnalysisController> logger)
         {
             _env = env;
             _repository = repository;
-            _excelAnalyzer = excelAnalyzer;
+            //_excelAnalyzer = excelAnalyzer;
             _logger = logger;
         }
 
