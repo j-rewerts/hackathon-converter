@@ -1,5 +1,6 @@
 ﻿using Converter.Services.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks;
 
 namespace Converter.Services.Tests
 {
@@ -7,10 +8,12 @@ namespace Converter.Services.Tests
     public class AnalysisRepositoryTests
     {
         [TestMethod]
-        public void StartAnalysisTest()
+        public async Task StartAnalysisTest()
         {
             IAnalysisContext context = new MockAnalysisContext();
-            //AnalysisRepository repo = new AnalysisRepository(context);
+            AnalysisRepository repo = new AnalysisRepository(context);
+            int id = await repo.StartAnalysisAsync("a-file-id");
+            Assert.AreEqual(-1, id);
         }
     }
 }

@@ -63,7 +63,7 @@ namespace Converter.Services.WebApi.Controllers
             // start analyzing immediately on new thread
             ThreadPool.QueueUserWorkItem(s =>
             {
-                _excelAnalyzer.Analyze(id);
+                _excelAnalyzer.Analyze(id, analysisId);
             });            
 
 
