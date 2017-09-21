@@ -34,10 +34,18 @@
 
   <ItemGroup>
     <Content Include="app.yaml" CopyToOutputDirecetory="Always" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Content Include="wwwroot\3rdpartylicenses.txt" />
+    <Content Include="wwwroot\favicon.ico" />
+    <Content Include="wwwroot\index.html" />
+    <Content Include="wwwroot\inline.a35d8a806a889cc02f12.bundle.js" />
+    <Content Include="wwwroot\main.a499fef44f0ebe029485.bundle.js" />
+    <Content Include="wwwroot\MaterialIcons-Regular.012cf6a10129e2275d79.woff" />
+    <Content Include="wwwroot\MaterialIcons-Regular.570eb83859dc23dd0eec.woff2" />
+    <Content Include="wwwroot\MaterialIcons-Regular.a37b0c01c0baf1888ca8.ttf" />
+    <Content Include="wwwroot\MaterialIcons-Regular.e79bfd88537def476913.eot" />
+    <Content Include="wwwroot\polyfills.a6ddc18d064d154c3504.bundle.js" />
+    <Content Include="wwwroot\styles.a17adbbadab96fa6ee89.bundle.css" />
+    <Content Include="wwwroot\vendor.18bccde13dc62a25a685.bundle.js" />
   </ItemGroup>
   
 </Project>
