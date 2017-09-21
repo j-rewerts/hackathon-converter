@@ -16,17 +16,19 @@ namespace Converter.Services.TaskRunner
 
 
         public ExcelAnalyzer(
-            ILogger<ExcelAnalyzer> logger,
-            IConfigurationRoot configuration,
-            IAnalysisRepository repository)
+            IAnalysisRepository repository,
+            ILogger<ExcelAnalyzer> logger
+            )
         {
-            this._logger = logger;
-            this._configuration = configuration;
+            if (logger == null)
+                _logger = new Logger<ExcelAnalyzer>(new LoggerFactory());
+            else
+                _logger = logger;
+            this._repository = repository;
         }
 
         private readonly ILogger<ExcelAnalyzer> _logger;
-        private readonly IConfigurationRoot _configuration;
-        private readonly IAnalysisRepository repository;
+        private readonly IAnalysisRepository _repository;
 
         public void Analyze(string googleFileId, int analysisId)
         {
@@ -56,7 +58,7 @@ namespace Converter.Services.TaskRunner
 
         private void GetGoogleDriveFile(string id, Action<Stream> callback)
         {
-            string applicationName = _configuration["Google:ApplicationName"];
+            string applicationName = "Google File Checker"; //_configuration["Google:ApplicationName"];
             if (string.IsNullOrWhiteSpace(applicationName))
             {
                 var service = new DriveService(new BaseClientService.Initializer()
