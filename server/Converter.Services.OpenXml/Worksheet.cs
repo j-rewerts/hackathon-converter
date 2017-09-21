@@ -7,7 +7,9 @@ namespace Converter.Services.OpenXml
     public class Worksheet
     {
         public string Name { get; set; }
-        public int RowCount { get; set; }
-        public int ColumnCount  { get; set; }
+        public uint FirstColumn { get; set; }
+        public uint LastColumn { get; set; }
+        public uint FirstRow { get; set; }
+        public uint LastRow { get; set; }
     }
 }

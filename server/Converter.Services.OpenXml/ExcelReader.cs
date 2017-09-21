@@ -14,7 +14,8 @@ namespace Converter.Services.OpenXml
         private Stream file;
         private Workbook workbook;
         private IList<Worksheet> worksheets;
-        
+        private Stream vbaStream;
+
         public ExcelReader(Stream file, string GoogleFileID)
         {
             this.file = file;
@@ -45,12 +46,12 @@ namespace Converter.Services.OpenXml
                 {
                     var sheetProperties = worksheetPart.RootElement.FirstChild as SheetProperties;
                     string sheetName = sheetProperties.CodeName.Value;
-                    var worksheetInfo = new Worksheet();
-                    this.worksheets.Add(worksheetInfo);
                     foreach (SheetData sheetData in worksheetPart.Worksheet.Elements<SheetData>())
+                    {
+
                         foreach (var cellInfo in GetCellValues(workbookPart, sheetData, sheetName))
                             yield return cellInfo;
-                    
+                    }
                 }
             }
         }
@@ -104,17 +105,60 @@ namespace Converter.Services.OpenXml
         private IEnumerable<CellInfo> GetCellValues(WorkbookPart workbookPart, SheetData sheetData, string sheetName)
         {
             string text = "";
+            var worksheetInfo = new Worksheet();
             foreach (Row r in sheetData.Elements<Row>())
             {
+                if (worksheetInfo.FirstRow == 0)
+                {
+                    worksheetInfo.FirstRow = r.RowIndex.Value;
+                    Cell cellFirst = (Cell)r.FirstChild;
+                    worksheetInfo.FirstColumn = (uint)cellFirst.GetColumnReferenceIndex();
+                    Cell cellLast = (Cell)r.LastChild;
+                    worksheetInfo.LastColumn = (uint)cellLast.GetColumnReferenceIndex();
+                }
+                else
+                {
+                    Cell cellFirst = (Cell)r.FirstChild;
+                    uint firstColumn = (uint)cellFirst.GetColumnReferenceIndex();
+                    Cell cellLast = (Cell)r.LastChild;
+                    uint lastColumn = (uint)cellLast.GetColumnReferenceIndex();
+                    if (firstColumn < worksheetInfo.FirstColumn)
+                    {
+                        worksheetInfo.FirstColumn = firstColumn;
+                    }
+                    if (lastColumn > worksheetInfo.LastColumn)
+                    {
+                        worksheetInfo.LastColumn = lastColumn;
+                    }
+                }
+                worksheetInfo.LastRow = r.RowIndex.Value;
+
                 foreach (Cell c in r.Elements<Cell>())
                 {
-                    c.GetRowIndex();
+                    //c.GetRowIndex();
                     text = workbookPart.TryGetStringFromCell(c);// c.CellValue.Text;
                     Console.Write(text + " ");
                     yield return new CellInfo() { Cell = c, Value = text, SheetName = sheetName };
                 }
             }
+            this.worksheets.Add(worksheetInfo);
+        } // end get cell values
+
+        private void GetVbaStreamFrom()
+        {
+            using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(this.file, false))
+            {
+                WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
+                VbaProjectPart vbaProjectPart = workbookPart.VbaProjectPart;
+                if (vbaProjectPart == null)
+                {
+                    this.vbaStream = null;
+                }
+                else
+                {
+                    this.vbaStream = vbaProjectPart.GetStream();
+                }
+            }
         }
     }
-
 }
