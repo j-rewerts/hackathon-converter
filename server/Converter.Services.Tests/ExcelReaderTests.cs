@@ -19,7 +19,7 @@ namespace Converter.Services.Tests
             using (var stream = new FileStream(path: excelFile, mode: FileMode.Open))
             {
                 var reader = new ExcelReader(stream, "ASDSA");
-                reader.ReadFile();
+                reader.ReadFile().ToList();
             }
         }
         [TestMethod]

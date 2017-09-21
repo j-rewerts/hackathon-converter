@@ -9,7 +9,7 @@ using DocumentFormat.OpenXml;
 
 namespace Converter.Services.OpenXml
 {
-    public class ExcelReader
+    public class ExcelReader : IDisposable
     {
         private Stream file;
         private Workbook workbook;
@@ -19,40 +19,65 @@ namespace Converter.Services.OpenXml
         public ExcelReader(Stream file, string GoogleFileID)
         {
             this.file = file;
-            this.workbook = new Workbook();
-            this.workbook.GoogleFileID = GoogleFileID;
-            this.workbook.HasCustomCode = false;
-            this.workbook.HasDataConnections = false;
-            this.workbook.HasExternalConnections = false;
-            this.workbook.HasExternalHyperLinks = false;
-            this.workbook.HasExternalRelationships = false;
-            this.worksheets = new List<Worksheet>();
+            workbook = new Workbook();
+            workbook.GoogleFileID = GoogleFileID;
+            workbook.HasCustomCode = false;
+            workbook.HasDataConnections = false;
+            workbook.HasExternalConnections = false;
+            workbook.HasExternalHyperLinks = false;
+            workbook.HasExternalRelationships = false;
+            worksheets = new List<Worksheet>();
+
+            spreadsheetDocument = SpreadsheetDocument.Open(this.file, false);
+            workbookPart = spreadsheetDocument.WorkbookPart;
         }
+
+        private SpreadsheetDocument spreadsheetDocument;
+        private WorkbookPart workbookPart;
+
         public Workbook GetWorkbook()
         {
             return this.workbook;
         }
+        public IEnumerable<string> GetSheetNames()
+        {
+            int sheetIndex = 0;
+            foreach (WorksheetPart worksheetpart in workbookPart.WorksheetParts)
+            {
+                var worksheet = worksheetpart.Worksheet;
+
+                // Grab the sheet name each time through your loop
+                string sheetName = workbookPart.Workbook.Descendants<Sheet>().ElementAt(sheetIndex).Name;
+
+                yield return sheetName;
+                sheetIndex++;
+            }
+        }
+
         public IEnumerable<Worksheet> GetWorksheets()
         {
             return this.worksheets;
         }
         public IEnumerable<CellInfo> ReadFile()//Action<object> onCellValueRead)
         {
-            using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(this.file, false))
+            DoAdditionalChecks(workbookPart);
+            int sheetIndex = 0;
+            foreach (WorksheetPart worksheetPart in workbookPart.WorksheetParts)
             {
-                WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
-                DoAdditionalChecks(workbookPart);
-                foreach (WorksheetPart worksheetPart in workbookPart.WorksheetParts)
-                {
-                    var sheetProperties = worksheetPart.RootElement.FirstChild as SheetProperties;
-                    string sheetName = sheetProperties.CodeName.Value;
-                    foreach (SheetData sheetData in worksheetPart.Worksheet.Elements<SheetData>())
-                    {
+                var sheetProperties = worksheetPart.RootElement.FirstChild as SheetProperties;
+                //string sheetName = sheetProperties.CodeName.Value;
 
-                        foreach (var cellInfo in GetCellValues(workbookPart, sheetData, sheetName))
-                            yield return cellInfo;
-                    }
+                var worksheet = worksheetPart.Worksheet;
+                // Grab the sheet name each time through your loop
+                string sheetName = workbookPart.Workbook.Descendants<Sheet>().ElementAt(sheetIndex).Name;
+
+                foreach (SheetData sheetData in worksheetPart.Worksheet.Elements<SheetData>())
+                {
+                    foreach (var cellInfo in GetCellValues(workbookPart, sheetData, sheetName))
+                        yield return cellInfo;
                 }
+
+                sheetIndex++;
             }
         }
         private void DoAdditionalChecks(WorkbookPart workbookPart)
@@ -160,5 +185,45 @@ namespace Converter.Services.OpenXml
                 }
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                    if (spreadsheetDocument != null)
+                    {
+                        spreadsheetDocument.Dispose();
+                        spreadsheetDocument = null;
+                    }
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~ExcelReader() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
