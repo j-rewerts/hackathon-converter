@@ -28,8 +28,17 @@ namespace Converter.Services.OpenXml
             workbook.HasExternalRelationships = false;
             worksheets = new List<Worksheet>();
 
-            spreadsheetDocument = SpreadsheetDocument.Open(this.file, false);
-            workbookPart = spreadsheetDocument.WorkbookPart;
+            try
+            {
+                spreadsheetDocument = SpreadsheetDocument.Open(this.file, false);
+                workbookPart = spreadsheetDocument.WorkbookPart;
+            }
+            catch (Exception ex)
+            {
+                throw new NotSpreadSheetException("Can't read file", ex);
+            }
+
+
         }
 
         private SpreadsheetDocument spreadsheetDocument;
