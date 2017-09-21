@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, Type } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { MdCardModule } from '@angular/material';
+import { MdCardModule, MdExpansionModule } from '@angular/material';
 import { CovalentExpansionPanelModule, CovalentDataTableModule } from '@covalent/core';
 import { CovalentHttpModule, IHttpInterceptor } from '@covalent/http';
 import { CovalentHighlightModule } from '@covalent/highlight';
@@ -40,6 +40,7 @@ const gapiClientConfig: ClientConfig = {
     BrowserAnimationsModule,
     AppRoutingModule,
     MdCardModule,
+    MdExpansionModule,
     CovalentExpansionPanelModule,
     CovalentDataTableModule,
     CovalentHttpModule.forRoot(),

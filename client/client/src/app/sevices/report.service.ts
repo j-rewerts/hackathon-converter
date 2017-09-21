@@ -24,6 +24,7 @@ export class ReportService {
 
   getReports(): Observable<IFile[]> {
     return this.httpService.get(API_ENDPOINT.GET_REPORTS)
-      .map((res: Response) => [res.json()]);
+      .map((res: Response) => res.json().tasks);
+      // .map((res: Response) => [res.json()]);
   }
 }
