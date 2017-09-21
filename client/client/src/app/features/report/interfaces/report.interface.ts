@@ -6,7 +6,7 @@ export interface IIssue {
 
 export interface IFile {
   id: number;
-  name: string;
+  fileName: string;
   status: string;
   issues?: IIssue[];
 }

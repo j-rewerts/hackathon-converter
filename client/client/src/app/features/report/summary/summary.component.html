@@ -4,7 +4,7 @@
     <div class="column-status">{{reportConfig.statusLabel}}</div>
   </div>
   <ng-template let-item let-i="index" ngFor [ngForOf]="fileList">
-    <td-expansion-panel [label]="item.name" [sublabel]="item.status">
+    <td-expansion-panel [label]="item.fileName" [sublabel]="item.status">
       <div *ngIf="!item.issues || item.issues.length === 0">{{reportConfig.noIssueMessage}}</div>
       <div *ngIf="item.issues && item.issues.length > 0">
         <!--<div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">-->

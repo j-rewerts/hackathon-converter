@@ -1,24 +1,15 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  ChangeDetectorRef
+} from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { GoogleApiService, GoogleAuthService } from 'ng-gapi';
+import GoogleAuth = gapi.auth2.GoogleAuth;
 
 import { IFile } from '../interfaces/report.interface';
 import { IReportConfig, ReportConfig } from 'app/config/report.config';
 import { ReportService } from 'app/sevices/report.service';
-
-
-// const FILES: IFile[] = [
-//   { id: 1, name: 'file 1', status: 'complete' },
-//   { id: 2, name: 'file 2', status: 'complete',
-//     issues: [ { id: 1, message: 'formula in C1 cannot be converted', type: 'Unconvertable Formula' },
-//               { id: 2, message: 'Worksheet test1 contains 7 million cells', type: '> 2M Cells' },
-//               { id: 3, message: 'Workbook contains VBA macros', type: 'VBA Macros' }
-//             ] },
-//   { id: 3, name: 'file 3', status: 'pending' },
-//   { id: 4, name: 'file 4', status: 'complete',
-//   issues: [ { id: 4, message: 'You got problems yo', type: 'Unconvertable Formula' },
-//             { id: 5, message: 'got 99 problems but 3 mill cells aint one', type: '> 2M Cells' },
-//             { id: 6, message: 'VBA LYFE', type: 'VBA Macros' }
-//           ] },
-// ];
 
 @Component({
   selector: 'cv-summary',
@@ -26,22 +17,60 @@ import { ReportService } from 'app/sevices/report.service';
   styleUrls: ['./summary.component.css']
 })
 
-export class SummaryComponent {
+export class SummaryComponent implements OnDestroy {
 
-  fileList;
+  fileList: IFile[];
   selectedFile: IFile;
   reportConfig: IReportConfig;
+  authSub: Subscription;
+  reportSub: Subscription;
 
-  constructor(private reportService: ReportService) {
+  constructor(private reportService: ReportService,
+              private gapiService: GoogleApiService,
+              private googleAuth: GoogleAuthService,
+              private changeDetectorRef: ChangeDetectorRef) {
+
     this.reportConfig = new ReportConfig();
 
+    this.gapiService.onLoad(() => {
+      this.authSub = this.googleAuth.getAuth().subscribe((auth) => this.getToken(auth));
+    });
+
+    this.reportSub = this.reportService.analyzeSuccess$.subscribe(() => this.getReports());
+  }
+
+  ngOnDestroy(): void {
+    this.authSub.unsubscribe();
+    this.reportSub.unsubscribe();
+  }
+
+  getToken(auth: GoogleAuth): void {
+    auth.signIn()
+      .then(res => this.analyzeFile(res.getAuthResponse().access_token))
+      .catch((err) => {
+        console.log('getToken FAILED ' + err);
+      });
+  }
+
+  analyzeFile(token: string): void {
+    this.reportService.analyzeFile({})
+      .subscribe(
+        data => {},
+        err => {
+          console.log('getReports FAILED' + err);
+        }
+      );
+  }
+
+  getReports(): void {
     this.reportService.getReports()
       .subscribe(
         data => {
-          this.fileList = [data];
+          this.fileList = data;
+          this.changeDetectorRef.detectChanges();
         },
         err => {
-          console.log('error occurred');
+          console.log('getReports FAILED' + err);
         }
       );
   }
