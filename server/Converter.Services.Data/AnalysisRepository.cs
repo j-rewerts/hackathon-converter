@@ -28,8 +28,30 @@ namespace Converter.Services.Data
 
         public async Task<int> StartAnalysisAsync(string googleFileId)
         {
-            var analysis = _context.Analysis.Find(googleFileId);
-            analysis.AnalysisStatus = Enums.AnalysisStatus.InProgress;
+            var workbook = _context.Workbook.FirstOrDefault(x => x.GoogleFileID == googleFileId);
+            if (workbook is null)
+            { 
+                workbook = new Workbook { GoogleFileID = googleFileId };
+                await _context.SaveChangesAsync();
+            }
+
+            var analysis = _context.Analysis.FirstOrDefault(x => x.Workbook.WorkbookID == workbook.WorkbookID);
+            if (analysis is null)
+            {
+                analysis = new Analysis
+                {
+                    Workbook = workbook,
+                    AnalysisStatus = AnalysisStatus.InProgress,
+                    StartDateTime = DateTime.Now
+                };
+            }
+            else
+            {
+                analysis.AnalysisStatus = AnalysisStatus.InProgress;
+                analysis.StartDateTime = DateTime.Now;
+                analysis.EndDateTime = null;
+            }
+
             await _context.SaveChangesAsync();
             return analysis.AnalysisID;
         }

@@ -44,7 +44,7 @@ namespace Converter.Services.WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPost("[action]/{:id}")]
+        [HttpPost("[action]/{id}")]
         public async Task<IActionResult> Start(string id)
         {
 
