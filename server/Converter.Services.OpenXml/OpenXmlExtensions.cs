@@ -174,7 +174,7 @@ namespace Converter.Services.OpenXml
                 else
                     returnValue += (c - 65);
             }
-            return returnValue;
+            return returnValue +1;
         }
 
         internal static int GetExcelColumnReferenceIndex(this string cellReference)

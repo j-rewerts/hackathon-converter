@@ -36,6 +36,8 @@
     <Content Include="app.yaml" CopyToOutputDirecetory="Always" />
     <Content Include="wwwroot\3rdpartylicenses.txt" />
     <Content Include="wwwroot\favicon.ico" />
+    <Content Include="wwwroot\google32a3b430b398bee2.html" />
+    <Content Include="wwwroot\google56a30284bd513829.html" />
     <Content Include="wwwroot\index.html" />
     <Content Include="wwwroot\inline.a35d8a806a889cc02f12.bundle.js" />
     <Content Include="wwwroot\main.a499fef44f0ebe029485.bundle.js" />

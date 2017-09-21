@@ -38,8 +38,8 @@ namespace Converter.Services.WebApi
             services.AddAnalysisRepository(options =>
             {
                 // TODO: configure database options (like connection string)
-                MappingConfig.RegisterMaps();
             });
+            MappingConfig.RegisterMaps();
 
             services.AddScoped<ExcelAnalyzer>();
         }
@@ -52,7 +52,18 @@ namespace Converter.Services.WebApi
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseCors(options =>
+            {
+                options.AllowAnyOrigin();
+                options.AllowAnyMethod();
+                options.AllowAnyHeader();
+            });
+
+
             app.UseMvc();
+
+
         }
     }
 }

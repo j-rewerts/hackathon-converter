@@ -9,6 +9,7 @@ namespace Converter.Services.Data
             : base()
         { }
 
+
         public AnalysisContext(DbContextOptions<AnalysisContext> options)
             : base(options)
         { }
