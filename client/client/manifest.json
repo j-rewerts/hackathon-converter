@@ -11,7 +11,7 @@
           "type": ["image/png", "image/jpeg", "image/gif", "application/vnd.google.drive.ext-type.png",
           "application/vnd.google.drive.ext-type.jpg","application/vnd.google.drive.ext-type.gif",
           "application/vnd.ms-excel.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
-          "href": "http://jrewerts-project.appspot.com/",
+          "href": "https://jrewerts-project.appspot.com/",
           "title": "Open",
           "disposition": "window"
         }
@@ -22,7 +22,7 @@
     },
     "app": {
       "launch": {
-      "web_url": "http://jrewerts-project.appspot.com"
+      "web_url": "https://jrewerts-project.appspot.com"
       }
     }
 }
