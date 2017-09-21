@@ -10,6 +10,7 @@ namespace Converter.Services.OpenXml
         public string Name { get; set; }
         public string GoogleFileID { get; set; }
         public bool HasExternalConnections { get; set; }
+        public HashSet<string> ExternalRelationships { get; set; }
         public bool HasCustomCode { get; set; }
         public bool HasDataConnections { get; set; }
         public bool HasExternalHyperLinks { get; set; }
