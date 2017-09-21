@@ -1,11 +1,11 @@
 export interface IIssue {
-  id: number;
+  id: string;
   message: string;
   type: string;
 }
 
 export interface IFile {
-  id: number;
+  id: string;
   fileName: string;
   status: string;
   issues?: IIssue[];

@@ -4,23 +4,40 @@
     <div class="column-status">{{reportConfig.statusLabel}}</div>
   </div>
   <ng-template let-item let-i="index" ngFor [ngForOf]="fileList">
-    <td-expansion-panel [label]="item.fileName" [sublabel]="item.status">
-      <div *ngIf="!item.issues || item.issues.length === 0">{{reportConfig.noIssueMessage}}</div>
-      <div *ngIf="item.issues && item.issues.length > 0">
-        <!--<div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">-->
-        <!--<span class="push-left-sm">-->
-        <!--<span class="md-title">{{reportConfig.issuesLabel}}</span>-->
-        <!--</span>-->
-        <!--</div>-->
-        <span class="md-title">{{reportConfig.issuesLabel}}</span>
-        <md-divider></md-divider>
-        <td-data-table
-          [data]="item.issues"
-          [columns]="reportConfig.issueColumns"
-          [style.height.px]="200">
-        </td-data-table>
-      </div>
-    </td-expansion-panel>
-
+    <a (click)="filePanel.toggle()">
+      <td-expansion-panel #filePanel [label]="item.fileName" [sublabel]="item.status">
+        <div *ngIf="!item.issues || item.issues.length === 0">{{reportConfig.noIssueMessage}}</div>
+        <div *ngIf="item.issues && item.issues.length > 0">
+          <span class="md-title">{{reportConfig.issuesLabel}}</span>
+          <md-divider></md-divider>
+          <td-data-table
+            [data]="item.issues"
+            [columns]="reportConfig.issueColumns"
+            [style.height.px]="200">
+          </td-data-table>
+        </div>
+      </td-expansion-panel>
+    </a>
   </ng-template>
 </md-card>
+
+<!--<md-card>-->
+  <!--<div class="list-header">-->
+    <!--<div class="column-name">{{reportConfig.nameLabel}}</div>-->
+    <!--<div class="column-status">{{reportConfig.statusLabel}}</div>-->
+  <!--</div>-->
+  <!--<ng-template let-item let-i="index" ngFor [ngForOf]="fileList">-->
+    <!--<td-expansion-panel #filePanel [label]="item.fileName" [sublabel]="item.status">-->
+      <!--<div *ngIf="!item.issues || item.issues.length === 0">{{reportConfig.noIssueMessage}}</div>-->
+      <!--<div *ngIf="item.issues && item.issues.length > 0">-->
+        <!--<span class="md-title">{{reportConfig.issuesLabel}}</span>-->
+        <!--<md-divider></md-divider>-->
+        <!--<td-data-table-->
+          <!--[data]="item.issues"-->
+          <!--[columns]="reportConfig.issueColumns"-->
+          <!--[style.height.px]="200">-->
+        <!--</td-data-table>-->
+      <!--</div>-->
+    <!--</td-expansion-panel>-->
+  <!--</ng-template>-->
+<!--</md-card>-->
