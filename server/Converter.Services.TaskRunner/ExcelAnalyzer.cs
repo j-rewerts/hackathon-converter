@@ -8,6 +8,7 @@ using Google.Apis.Services;
 using Microsoft.Extensions.Configuration;
 using Converter.Services.OpenXml;
 using Converter.Services.Data;
+using System.Threading.Tasks;
 
 namespace Converter.Services.TaskRunner
 {
@@ -30,7 +31,7 @@ namespace Converter.Services.TaskRunner
         private readonly ILogger<ExcelAnalyzer> _logger;
         private readonly IAnalysisRepository _repository;
 
-        public void Analyze(string googleFileId, int analysisId, string oauthToken)
+        public async Task AnalyzeAsync(string googleFileId, int analysisId, string oauthToken)
         {
             if (string.IsNullOrWhiteSpace(googleFileId))
                 throw new ArgumentNullException("googleFileId");
@@ -42,21 +43,7 @@ namespace Converter.Services.TaskRunner
 
             try
             {
-                GetGoogleDriveFile(googleFileId, oauthToken, stream =>
-                {
-                    var reader = new ExcelReader(stream, googleFileId);
-
-                    foreach (var cell in reader.ReadFile())
-                    {
-
-                    }
-
-                    // now that we've read the workbook we can save the analysis results
-                    foreach (var sheetInfo in reader.GetWorksheets())
-                    {
-                        //repository.AddWorksheetAsync(analysisId, sheetInfo.Name, sheetInfo.RowCount, sheetInfo.ColumnCount * sheetInfo.RowCount);
-                    }
-                });
+                await GetGoogleDriveFileAsync(googleFileId, oauthToken, async stream => { await AnalyzeAsync(googleFileId, stream); });
             }
             catch (Exception err)
             {
@@ -64,10 +51,24 @@ namespace Converter.Services.TaskRunner
             }
         }
 
-        internal static void GetGoogleDriveFile(string id, string oauthToken, Action<Stream> callback)
+        public async Task AnalyzeAsync(string googleFileId, Stream stream)
+        {
+            var workbook = await _repository.RetrieveWorkbookByGoogleFileIdAsync(googleFileId);
+            var reader = new ExcelReader(stream);
+
+            await _repository.AddWorksheetsAsync(workbook.Id, reader.GetSheetNames());
+            
+            // now that we've read the workbook we can save the analysis results
+            foreach (var sheetInfo in reader.GetWorksheets())
+            {
+                await _repository.UpdateWorksheetCountsAsync(sheetInfo.Name, (int)sheetInfo.CellCount, 0, 0, 0);
+            }
+        }
+
+        private async Task GetGoogleDriveFileAsync(string id, string oauthToken, Func<Stream, Task> callback)
         {
             string applicationName = "Google File Checker"; //_configuration["Google:ApplicationName"];
-            if (string.IsNullOrWhiteSpace(applicationName))
+            if (!string.IsNullOrWhiteSpace(applicationName))
             {
                 throw new InvalidOperationException("applicationName is missing");
             }
@@ -91,7 +92,7 @@ namespace Converter.Services.TaskRunner
                 {
                     using (var s = new FileStream(tempFile, FileMode.Open, FileAccess.Read))
                     {
-                        callback(s);
+                        await callback(s);
                     }
                 }
                 finally

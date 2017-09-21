@@ -24,12 +24,12 @@ namespace Converter.Services.WebApi.Controllers
     {
         public AnalysisController(IHostingEnvironment env,
             IAnalysisRepository repository,
-            //ExcelAnalyzer excelAnalyzer,
+            ExcelAnalyzer excelAnalyzer,
             ILogger<AnalysisController> logger)
         {
             _env = env;
             _repository = repository;
-            //_excelAnalyzer = excelAnalyzer;
+            _excelAnalyzer = excelAnalyzer;
             _logger = logger;
         }
 
@@ -68,9 +68,9 @@ namespace Converter.Services.WebApi.Controllers
             }
 
             // start analyzing immediately on new thread
-            ThreadPool.QueueUserWorkItem(s =>
+            ThreadPool.QueueUserWorkItem(async s =>
             {
-                _excelAnalyzer.Analyze(id, analysisId, oauthToken);
+                await _excelAnalyzer.AnalyzeAsync(id, analysisId, oauthToken);
             });            
 
             return Ok();

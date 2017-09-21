@@ -6,6 +6,7 @@
         {
             AnalysisToAnalysisDtoMap.RegisterMap();
             IssueToIssueDtoMap.RegisterMap();
+            WorkbookToWorkbookDtoMap.RegisterMap();
         }
     }
 }
