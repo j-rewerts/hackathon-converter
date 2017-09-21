@@ -12,8 +12,8 @@ export class ReportService {
 
   constructor(private httpService: HttpInterceptorService) {}
 
-  analyzeFile(data: {}): Observable<any> {
-    return this.httpService.post(API_ENDPOINT.ANALYZE_FILE, data)
+  analyzeFile(fileId: string): Observable<any> {
+    return this.httpService.post(API_ENDPOINT.ANALYZE_FILE + fileId, {})
       .map((res: Response) => res);
   }
 

@@ -5,7 +5,8 @@ import { SummaryComponent } from './features/report/summary/summary.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 
 const appRoutes: Routes = [
-  {path: '', redirectTo: '/reports', pathMatch: 'full'},
+  // {path: '', redirectTo: '/reports', pathMatch: 'full'},
+  {path: '', component: SummaryComponent},
   {path: 'reports', component: SummaryComponent},
   {path: '404', component: PageNotFoundComponent},
   {path: '**', redirectTo: '/404'}];
@@ -13,7 +14,6 @@ const appRoutes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(appRoutes)
-    // RouterModule.forRoot(appRoutes, {preloadingStrategy: PreloadAllModules})
   ],
   exports: [
     RouterModule
