@@ -144,20 +144,15 @@ namespace Converter.Services.OpenXml
             this.worksheets.Add(worksheetInfo);
         } // end get cell values
 
-        private void GetVbaStreamFrom()
+        private void GetVbaStream(VbaProjectPart vbaProjectPart)
         {
-            using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(this.file, false))
+            if (vbaProjectPart == null)
             {
-                WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
-                VbaProjectPart vbaProjectPart = workbookPart.VbaProjectPart;
-                if (vbaProjectPart == null)
-                {
-                    this.vbaStream = null;
-                }
-                else
-                {
-                    this.vbaStream = vbaProjectPart.GetStream();
-                }
+                this.vbaStream = null;
+            }
+            else
+            {
+                this.vbaStream = vbaProjectPart.GetStream();
             }
         }
     }
