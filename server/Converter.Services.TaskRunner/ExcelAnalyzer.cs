@@ -29,21 +29,25 @@ namespace Converter.Services.TaskRunner
         }
 
         private readonly ILogger<ExcelAnalyzer> _logger;
+        public ILogger<ExcelAnalyzer> Logger { get { return _logger; } }
         private readonly IAnalysisRepository _repository;
+        
 
-        public async Task AnalyzeAsync(string googleFileId, int analysisId, string oauthToken)
+        public async Task AnalyzeAsync(string googleFileId, string oauthToken)
         {
             if (string.IsNullOrWhiteSpace(googleFileId))
                 throw new ArgumentNullException("googleFileId");
-            if (analysisId <= 0)
-                throw new ArgumentOutOfRangeException("analysisId", "analysisId must be greater than 0");
             if (string.IsNullOrWhiteSpace(oauthToken))
                 throw new ArgumentNullException("oauthToken");
 
 
             try
             {
-                await GetGoogleDriveFileAsync(googleFileId, oauthToken, async stream => { await AnalyzeAsync(googleFileId, stream); });
+                await GetGoogleDriveFileAsync(googleFileId, oauthToken, async stream => 
+                {
+                    
+                    await AnalyzeAsync(googleFileId, stream);
+                });
             }
             catch (Exception err)
             {
@@ -53,8 +57,24 @@ namespace Converter.Services.TaskRunner
 
         public async Task AnalyzeAsync(string googleFileId, Stream stream)
         {
-            var workbook = await _repository.RetrieveWorkbookByGoogleFileIdAsync(googleFileId);
-            var reader = new ExcelReader(stream);
+            Data.DTO.WorkbookDto workbook;
+            try
+            {
+                workbook = await _repository.RetrieveWorkbookByGoogleFileIdAsync(googleFileId);
+            }
+            catch (Exception err)
+            {
+                throw new InvalidOperationException($"Unable to get workbook with googleFileId { googleFileId }", err);
+            }
+            ExcelReader reader;
+            try
+            {
+                reader = new ExcelReader(stream);
+            }
+            catch (Exception err)
+            {
+                throw;
+            }
 
             await _repository.AddWorksheetsAsync(workbook.Id, reader.GetSheetNames());
             
@@ -65,10 +85,10 @@ namespace Converter.Services.TaskRunner
             }
         }
 
-        private async Task GetGoogleDriveFileAsync(string id, string oauthToken, Func<Stream, Task> callback)
+        internal static async Task GetGoogleDriveFileAsync(string id, string oauthToken, Func<Stream, Task> callback)
         {
             string applicationName = "Google File Checker"; //_configuration["Google:ApplicationName"];
-            if (!string.IsNullOrWhiteSpace(applicationName))
+            if (string.IsNullOrWhiteSpace(applicationName))
             {
                 throw new InvalidOperationException("applicationName is missing");
             }
@@ -82,14 +102,17 @@ namespace Converter.Services.TaskRunner
 
                 var file = service.Files.Get(id);
                 string tempFile = Path.GetTempFileName();
-                using (Stream s = new FileStream(tempFile, FileMode.OpenOrCreate, FileAccess.Write))
-                {
-                    file.Download(s);
-                    s.Flush();
-                }
-
                 try
                 {
+                    using (Stream s = new FileStream(tempFile, FileMode.OpenOrCreate, FileAccess.Write))
+                    {
+                        var result = file.DownloadWithStatus(s);
+                        if (result.Status != Google.Apis.Download.DownloadStatus.Completed)
+                            throw new FileRetrievalFailedException("Unable to retrive file");
+                   
+                        s.Flush();
+                    }
+
                     using (var s = new FileStream(tempFile, FileMode.Open, FileAccess.Read))
                     {
                         await callback(s);

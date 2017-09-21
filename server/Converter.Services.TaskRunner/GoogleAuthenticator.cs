@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Converter.Services.TaskRunner
 {
@@ -18,7 +21,25 @@ namespace Converter.Services.TaskRunner
 
         public void Initialize(ConfigurableHttpClient httpClient)
         {
-            httpClient.DefaultRequestHeaders.Add("Bearer", _oauthToken);
+
+            httpClient.MessageHandler.AddExecuteInterceptor(new GoogleHttpExecuteInterceptor(_oauthToken));
+        }
+
+        private class GoogleHttpExecuteInterceptor : IHttpExecuteInterceptor
+        {
+            public GoogleHttpExecuteInterceptor(string oauthToken)
+            {
+                if (string.IsNullOrWhiteSpace(oauthToken))
+                    throw new ArgumentNullException("oauthToken");
+                _oauthToken = oauthToken;
+            }
+            private readonly string _oauthToken;
+
+            public Task InterceptAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                request.Headers.Add("Authorization", $"Bearer { _oauthToken }");
+                return Task.CompletedTask;
+            }
         }
     }
 }

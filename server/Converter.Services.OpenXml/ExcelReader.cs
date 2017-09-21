@@ -32,6 +32,10 @@ namespace Converter.Services.OpenXml
                 spreadsheetDocument = SpreadsheetDocument.Open(this.file, false);
                 workbookPart = spreadsheetDocument.WorkbookPart;
             }
+            catch (FileFormatException ffe)
+            {
+                throw new NotSpreadSheetException("Can't read file", ffe);
+            }
             catch (Exception ex)
             {
                 throw new NotSpreadSheetException("Can't read file", ex);

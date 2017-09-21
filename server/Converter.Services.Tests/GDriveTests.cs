@@ -4,20 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Converter.Services.Tests
 {
     [TestClass]
     public class GDriveTests
     {
-        private const string OAUTH_TOKEN = "ya29.GlvNBAIlkKfoOOcPLQM76rlOwATZmYN5275wmVrj1NuqpCYvlxqnv5TTHpPn1tscUMfpBJQPqrnBQ6XsH8KCnIwGnkQfaYtjZwQvJ4V7xrI8yfARmbGJbMiV6pty"; // update whenever you run the tests
-
+        private const string OAUTH_TOKEN = "ya29.GlvNBBkehEPR6cdyR20ZxwQrTTWiE7GQOv-qtkaTisL8k5KOlI5NdMMSeSbHCg9soqscDBVbaBydKxJnVxYp5mPNEd-JXuuyELJZGJGGIOlu_mWk-3JuWy44il9j";
         [TestMethod]
-        public void ReadGDriveFile()
+        public async Task ReadGDriveFile()
         {
-            string fileId = "1TkvTphttznBg9t4zR29gATu9WEhuAetygjLueMAAqHE";
+            string fileId = "0BxmMOBL2mKJ9YjJ6WDhReXcxQVE";
             byte[] startFileResults = new byte[256];
-            ExcelAnalyzer.GetGoogleDriveFile(fileId, OAUTH_TOKEN, s =>
+            await ExcelAnalyzer.GetGoogleDriveFileAsync(fileId, OAUTH_TOKEN, async s =>
             {
                 Assert.IsTrue(s.Read(startFileResults, 0, 256) > 0);
             });

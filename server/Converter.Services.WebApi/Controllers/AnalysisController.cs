@@ -55,10 +55,11 @@ namespace Converter.Services.WebApi.Controllers
             if (string.IsNullOrWhiteSpace(oauthToken))
                 throw new SecurityException("No OAuth token provided in request");
 
+            //Task<int> analysisIdTask;
             int analysisId;
             try
             {
-                analysisId = await _repository.StartAnalysisAsync(id);
+                analysisId =  await _repository.StartAnalysisAsync(id);
             }
             catch (Exception err)
             {
@@ -70,7 +71,12 @@ namespace Converter.Services.WebApi.Controllers
             // start analyzing immediately on new thread
             ThreadPool.QueueUserWorkItem(async s =>
             {
-                await _excelAnalyzer.AnalyzeAsync(id, analysisId, oauthToken);
+                // Can't use Dependency Injection because our calling thread will
+                // dispose the objects
+                var excelAnalyzer = new ExcelAnalyzer(
+                    AnalysisRepositoryFactory.CreateRepository(), _excelAnalyzer.Logger);
+
+                await excelAnalyzer.AnalyzeAsync(id, oauthToken);
             });            
 
             return Ok();
@@ -130,14 +136,65 @@ namespace Converter.Services.WebApi.Controllers
         public IActionResult Retrieve()
         {
             // TODO: implement
-            throw new NotImplementedException();
+            return Ok(new
+            {
+                tasks = new object[] {
+                    new {
+                        id = "1",
+                        status = "Completed",
+                        filename = "Example File 1.xlsx",
+                        issues = new object[] {
+                            new { id = "1", type = "hasVBA", message = "This workbook contains VBA macros." },
+                            new { id = "2", type = "tooManyCells", message = "Sheet 'Sheet1' has over 2000000 cells." },
+                            new { id = "3", type = "hasVBA", message = "Sheet 'Sheet1' has too many formulas." }
+                        },
+                    },
+                    new {
+                        id = "2",
+                        status = "Completed",
+                        filename = "Example File 2.xlsx",
+                        issues = new object[] {},
+                    },
+                    new {
+                        id = "3",
+                        status = "In progress",
+                        filename = "Example File 3.xlsx",
+                        issues = new object[] {
+                            new { id = "4", type = "hasVBA", message = "This workbook contains VBA macros." },
+                        },
+                    },
+                    new {
+                        id = "4",
+                        status = "In progress",
+                        filename = "Example File 3.xlsx",
+                        issues = new object[] {
+                            new { id = "4", type = "hasVBA", message = "This workbook contains VBA macros." },
+                        },
+                    },
+                    new {
+                        id = "5",
+                        status = "In progress",
+                        filename = "Not an Excel file.docx",
+                        issues = new object[] {
+                            new { id = "5", type = "embeddedImage", message = "This document contains embedded images." },
+                        },
+                    }
+                }
+
+        });
         }
 
         protected string OAuthToken
         {
             get
             {
-                return Request.Headers["Bearer"].FirstOrDefault();
+                var authToken = Request.Headers["Authorization"].FirstOrDefault();
+                if (!string.IsNullOrWhiteSpace(authToken) &&
+                    authToken.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase) &&
+                    authToken.Length > 7)
+                    return authToken.Substring(7);
+                else
+                    return null;
             }
         }
        
