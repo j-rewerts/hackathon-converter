@@ -127,10 +127,13 @@ namespace Converter.Services.OpenXml
             }
         }
 
-        private IEnumerable<CellInfo> GetCellValues(WorkbookPart workbookPart, SheetData sheetData, string sheetName)
+        private IEnumerable<CellInfo> GetCellValues(WorkbookPart workbookPart, 
+            SheetData sheetData, string sheetName)
         {
             string text = "";
+            string formula = "";
             var worksheetInfo = new Worksheet();
+            worksheetInfo.Name = sheetName;
             foreach (Row r in sheetData.Elements<Row>())
             {
                 if (worksheetInfo.FirstRow == 0)
@@ -162,27 +165,23 @@ namespace Converter.Services.OpenXml
                 {
                     //c.GetRowIndex();
                     text = workbookPart.TryGetStringFromCell(c);// c.CellValue.Text;
+                    formula = c.CellFormula?.InnerText;
                     Console.Write(text + " ");
-                    yield return new CellInfo() { Cell = c, Value = text, SheetName = sheetName };
+                    yield return new CellInfo() { Cell = c, Value = text, SheetName = sheetName, Formula = formula };
                 }
             }
             this.worksheets.Add(worksheetInfo);
         } // end get cell values
 
-        private void GetVbaStreamFrom()
+        private void GetVbaStream(VbaProjectPart vbaProjectPart)
         {
-            using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(this.file, false))
+            if (vbaProjectPart == null)
             {
-                WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
-                VbaProjectPart vbaProjectPart = workbookPart.VbaProjectPart;
-                if (vbaProjectPart == null)
-                {
-                    this.vbaStream = null;
-                }
-                else
-                {
-                    this.vbaStream = vbaProjectPart.GetStream();
-                }
+                this.vbaStream = null;
+            }
+            else
+            {
+                this.vbaStream = vbaProjectPart.GetStream();
             }
         }
 

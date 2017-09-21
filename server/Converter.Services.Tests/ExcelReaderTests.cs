@@ -35,7 +35,10 @@ namespace Converter.Services.Tests
 
                 var EmptyOnes = allItems.Where(x => string.IsNullOrWhiteSpace(x.Value)).ToList();
                 var nonEmptyOnes = allItems.Where(x => !string.IsNullOrWhiteSpace(x.Value)).ToList();
-
+                var formulaOnes = allItems.Where(x => !string.IsNullOrWhiteSpace(x.Formula)).ToList();
+                var cellCount = reader.GetWorksheets().Sum(x => x.CellCount);
+                var sheetCount = reader.GetWorksheets().Count();
+                var formulaCount = allItems.Count(x => !string.IsNullOrWhiteSpace(x.Formula));
                 var test = "";
             }
         }
