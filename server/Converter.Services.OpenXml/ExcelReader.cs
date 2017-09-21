@@ -17,11 +17,10 @@ namespace Converter.Services.OpenXml
         private Stream vbaStream;
         private IList<Connections> connections;
 
-        public ExcelReader(Stream file, string GoogleFileID)
+        public ExcelReader(Stream file)
         {
             this.file = file;
             workbook = new Workbook();
-            workbook.GoogleFileID = GoogleFileID;
             workbook.HasCustomCode = false;
             workbook.HasDataConnections = false;
             workbook.HasExternalConnections = false;

@@ -1,7 +1,11 @@
+using Converter.Services.Data;
+using Converter.Services.Data.Maps;
 using Converter.Services.OpenXml;
+using Converter.Services.TaskRunner;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Converter.Services.Tests
 {
@@ -18,10 +22,31 @@ namespace Converter.Services.Tests
 
             using (var stream = new FileStream(path: excelFile, mode: FileMode.Open))
             {
-                var reader = new ExcelReader(stream, "ASDSA");
+                var reader = new ExcelReader(stream);
                 reader.ReadFile().ToList();
             }
         }
+
+        [TestMethod]
+        public async Task AnalyzeExcelSheetAsync()
+        {
+            MappingConfig.RegisterMaps();
+
+            // open test excel file
+            string excelFile = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "TestBook1.xlsx");
+
+            using (var stream = new FileStream(path: excelFile, mode: FileMode.Open))
+            {
+                var context = new AnalysisContext();
+                var repo = new AnalysisRepository(context);
+                var analyzer = new ExcelAnalyzer(repo, null);
+
+                await analyzer.AnalyzeAsync("1", stream);
+            }
+        }
+
         [TestMethod]
         public void ReadExternalExcelSheet()
         {
@@ -30,7 +55,7 @@ namespace Converter.Services.Tests
             string excelFile = @"C:\Users\bnaka\Desktop\Finance\Linked to multiple excel.xlsx";
             using (var stream = new FileStream(path: excelFile, mode: FileMode.Open))
             {
-                var reader = new ExcelReader(stream, "ASDASDASD_SADDSA");
+                var reader = new ExcelReader(stream);
                 var allItems = reader.ReadFile().ToList();
 
                 var EmptyOnes = allItems.Where(x => string.IsNullOrWhiteSpace(x.Value)).ToList();
@@ -51,7 +76,7 @@ namespace Converter.Services.Tests
             string excelFile = @"C:\Users\bnaka\Desktop\Finance\Linked to excel.xls";
             using (var stream = new FileStream(path: excelFile, mode: FileMode.Open))
             {
-                var reader = new ExcelReader(stream, "ASDASDASD_SADDSA");
+                var reader = new ExcelReader(stream);
                 var allItems = reader.ReadFile().ToList();
 
                 var EmptyOnes = allItems.Where(x => string.IsNullOrWhiteSpace(x.Value)).ToList();

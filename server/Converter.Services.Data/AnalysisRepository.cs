@@ -32,7 +32,7 @@ namespace Converter.Services.Data
             if (workbook is null)
             { 
                 workbook = new Workbook { GoogleFileID = googleFileId };
-                await _context.SaveChangesAsync();
+                _context.Workbook.Add(workbook);
             }
 
             var analysis = _context.Analysis.FirstOrDefault(x => x.Workbook.WorkbookID == workbook.WorkbookID);
@@ -44,6 +44,7 @@ namespace Converter.Services.Data
                     AnalysisStatus = AnalysisStatus.InProgress,
                     StartDateTime = DateTime.Now
                 };
+                _context.Analysis.Add(analysis);
             }
             else
             {
@@ -112,24 +113,24 @@ namespace Converter.Services.Data
             return workbookIssue.IssueID;
         }
 
-        public async Task<int> AddWorksheetAsync(int workbookId, string name)
+        public async Task AddWorksheetsAsync(int workbookId, IEnumerable<string> names)
         {
-            var workbook = _context.Workbook.FirstOrDefault(x => x.WorkbookID == workbookId);
+            var workbook = _context.Workbook.Include(x => x.Worksheets).FirstOrDefault(x => x.WorkbookID == workbookId);
             if (workbook is null)
                 throw new Exception("Invalid Workbook ID provided.");
 
-            var worksheet = new Worksheet { Name = name };
-            workbook.Worksheets.Add(worksheet);
+            foreach (var name in names)
+                if (!workbook.Worksheets.Any(x => x.Name == name))
+                    workbook.Worksheets.Add(new Worksheet { Name = name });
 
             await _context.SaveChangesAsync();
-            return worksheet.WorksheetID;
         }
 
-        public async Task UpdateWorksheetCountsAsync(int worksheetId, int cellCount, int columnCount, int formulaCount, int rowCount)
+        public async Task UpdateWorksheetCountsAsync(string name, int cellCount, int columnCount, int formulaCount, int rowCount)
         {
-            var worksheet = _context.Worksheet.FirstOrDefault(x => x.WorksheetID == worksheetId);
+            var worksheet = _context.Worksheet.FirstOrDefault(x => x.Name == name);
             if (worksheet is null)
-                throw new Exception("Invalid Worksheet ID provided.");
+                throw new Exception("Invalid Worksheet Name provided.");
 
             worksheet.CellCount = cellCount;
             worksheet.ColumnCount = columnCount;
@@ -153,6 +154,14 @@ namespace Converter.Services.Data
             if (analysis is null)
                 return new AnalysisDto();
             return analysis;
+        }
+
+        public async Task<WorkbookDto> RetrieveWorkbookByGoogleFileIdAsync(string googleFileId)
+        {
+            var workbook = await _context.Workbook.ProjectTo<WorkbookDto>().FirstOrDefaultAsync(x => x.GoogleFileId == googleFileId);
+            if (workbook is null)
+                return new WorkbookDto();
+            return workbook;
         }
     }
 }
