@@ -7,11 +7,18 @@ namespace Converter.Services.TaskRunner
 {
     public class GoogleAuthenticator : IConfigurableHttpClientInitializer
     {
+        public GoogleAuthenticator(string oauthToken)
+        {
+            if (string.IsNullOrWhiteSpace(oauthToken))
+                throw new ArgumentNullException("oauthToken");
+            _oauthToken = oauthToken;
+        }
+
+        private readonly string _oauthToken;
 
         public void Initialize(ConfigurableHttpClient httpClient)
         {
-            // TODO: add the OAuth token to the httpClient
-            throw new NotImplementedException();
+            httpClient.DefaultRequestHeaders.Add("Bearer", _oauthToken);
         }
     }
 }

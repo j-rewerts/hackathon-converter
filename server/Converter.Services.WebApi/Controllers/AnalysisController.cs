@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -47,6 +48,12 @@ namespace Converter.Services.WebApi.Controllers
         [HttpPost("[action]/{id}")]
         public async Task<IActionResult> Start(string id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentNullException("id");
+
+            string oauthToken = OAuthToken;
+            if (string.IsNullOrWhiteSpace(oauthToken))
+                throw new SecurityException("No OAuth token provided in request");
 
             int analysisId;
             try
@@ -63,9 +70,8 @@ namespace Converter.Services.WebApi.Controllers
             // start analyzing immediately on new thread
             ThreadPool.QueueUserWorkItem(s =>
             {
-                _excelAnalyzer.Analyze(id, analysisId);
+                _excelAnalyzer.Analyze(id, analysisId, oauthToken);
             });            
-
 
             return Ok();
         }
@@ -127,6 +133,13 @@ namespace Converter.Services.WebApi.Controllers
             throw new NotImplementedException();
         }
 
+        protected string OAuthToken
+        {
+            get
+            {
+                return Request.Headers["Bearer"].FirstOrDefault();
+            }
+        }
        
     }
 }

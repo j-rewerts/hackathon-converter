@@ -30,11 +30,19 @@ namespace Converter.Services.TaskRunner
         private readonly ILogger<ExcelAnalyzer> _logger;
         private readonly IAnalysisRepository _repository;
 
-        public void Analyze(string googleFileId, int analysisId)
+        public void Analyze(string googleFileId, int analysisId, string oauthToken)
         {
+            if (string.IsNullOrWhiteSpace(googleFileId))
+                throw new ArgumentNullException("googleFileId");
+            if (analysisId <= 0)
+                throw new ArgumentOutOfRangeException("analysisId", "analysisId must be greater than 0");
+            if (string.IsNullOrWhiteSpace(oauthToken))
+                throw new ArgumentNullException("oauthToken");
+
+
             try
             {
-                GetGoogleDriveFile(googleFileId, stream =>
+                GetGoogleDriveFile(googleFileId, oauthToken, stream =>
                 {
                     var reader = new ExcelReader(stream, googleFileId);
 
@@ -56,22 +64,27 @@ namespace Converter.Services.TaskRunner
             }
         }
 
-        private void GetGoogleDriveFile(string id, Action<Stream> callback)
+        internal static void GetGoogleDriveFile(string id, string oauthToken, Action<Stream> callback)
         {
             string applicationName = "Google File Checker"; //_configuration["Google:ApplicationName"];
             if (string.IsNullOrWhiteSpace(applicationName))
             {
+                throw new InvalidOperationException("applicationName is missing");
+            }
+            else
+            { 
                 var service = new DriveService(new BaseClientService.Initializer()
                 {
-                    HttpClientInitializer = new GoogleAuthenticator(),
+                    HttpClientInitializer = new GoogleAuthenticator(oauthToken),
                     ApplicationName = applicationName
                 });
 
                 var file = service.Files.Get(id);
-                string tempFile = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
-                using (Stream s = new FileStream(tempFile, FileMode.CreateNew, FileAccess.Write))
+                string tempFile = Path.GetTempFileName();
+                using (Stream s = new FileStream(tempFile, FileMode.OpenOrCreate, FileAccess.Write))
                 {
                     file.Download(s);
+                    s.Flush();
                 }
 
                 try
