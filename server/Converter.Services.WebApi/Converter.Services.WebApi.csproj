@@ -43,10 +43,10 @@
     <Content Include="wwwroot\favicon.ico" />
     <Content Include="wwwroot\google56a30284bd513829.html" />
     <Content Include="wwwroot\index.html" />
-    <Content Include="wwwroot\inline.16951ed86c1b9dae57ee.bundle.js" />
     <Content Include="wwwroot\inline.a35d8a806a889cc02f12.bundle.js" />
+    <Content Include="wwwroot\inline.f00c76cc0da9778e1cfd.bundle.js" />
+    <Content Include="wwwroot\main.632107f139ae744545c8.bundle.js" />
     <Content Include="wwwroot\main.a499fef44f0ebe029485.bundle.js" />
-    <Content Include="wwwroot\main.ea1f81aa977512361e4a.bundle.js" />
     <Content Include="wwwroot\main.ece65d6d8f3ea9e69fbb.bundle.js" />
     <Content Include="wwwroot\MaterialIcons-Regular.012cf6a10129e2275d79.woff" />
     <Content Include="wwwroot\MaterialIcons-Regular.570eb83859dc23dd0eec.woff2" />
@@ -56,6 +56,7 @@
     <Content Include="wwwroot\styles.a17adbbadab96fa6ee89.bundle.css" />
     <Content Include="wwwroot\vendor.06ea1d93205befffabf2.bundle.js" />
     <Content Include="wwwroot\vendor.1d98c9a81961422d4458.bundle.js" />
+    <Content Include="wwwroot\vendor.32908a92731ba11af0fb.bundle.js" />
   </ItemGroup>
   
 </Project>
