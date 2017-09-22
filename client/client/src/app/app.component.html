@@ -1,1 +1,29 @@
-<cv-root></cv-root>
+<td-layout #layout>
+  <td-navigation-drawer [logo]="appConfig.sideMenu.logo" [sidenavTitle]="appConfig.sideMenu.title">
+    <cv-navlist [navListData]="appConfig.sideMenu.appMenu" (clicked)="layout.close()">
+    </cv-navlist>
+  </td-navigation-drawer>
+
+  <td-layout-nav>
+    <div td-toolbar-content layout="row" layout-align="center center" flex>
+      <button md-icon-button td-menu-button tdLayoutToggle>
+        <cv-icon [data]="appConfig.toolbar.toggleButton.icon"></cv-icon>
+      </button>
+      <span [routerLink]="['/']" class="cursor-pointer">{{appConfig.toolbar.brand}}</span>
+      <span flex></span>
+      <!--<a md-icon-button mdTooltip="Google Drive" href="https://teradata.github.io/covalent/" target="_blank">-->
+        <!--<md-icon>chrome_reader_mode</md-icon>-->
+      <!--</a>-->
+      <a md-icon-button
+         [mdTooltip]="appConfig.toolbar.github.hint"
+         [href]="appConfig.toolbar.github.link"
+         target="_blank">
+        <md-icon [svgIcon]="appConfig.toolbar.github.icon"></md-icon>
+      </a>
+    </div>
+    <div style="height: 100%">
+      <router-outlet></router-outlet>
+    </div>
+  </td-layout-nav>
+
+</td-layout>

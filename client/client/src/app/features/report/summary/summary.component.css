@@ -1,34 +1,64 @@
 @media (min-width: 600px) {
   md-card {
-    width: 500px;
-    margin: 100px auto 0;
+    width: 600px;
+    margin: 50px auto;
+    padding: 0
+  }
+  :host /deep/ md-card-header {
+    background-color: #616161;
+    padding: 25px 20px 15px;
+    color: white;
+    font-size: 20px !important;
+    font-weight: bold;
   }
 }
 
 @media (max-width: 599px) {
   md-card {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    box-shadow: none;
+    height: calc(100% - 60px) !important;
+    width: calc(100% - 60px) !important;
+    margin: 10px !important;
+    padding: 20px 20px !important;
   }
   :host /deep/ .md-subhead {
     width: 40%;
   }
+  :host /deep/ md-card-header {
+    border-bottom: 1px solid rgba(0,0,0,.25);
+    line-height: 26px;
+    padding: 5px 20px 5px;
+    font-size: 20px !important;
+    font-weight: bold;
+    opacity: 0.6;
+  }
+  :host /deep/ md-card-header .mat-card-header-text {
+    margin: 0 !important;
+  }
 }
+
+md-expansion-panel {
+  box-shadow: none !important;
+  border-top: solid 1px rgba(0, 0, 0, .1);
+}
+md-expansion-panel md-panel-description {
+  width: 40%;
+}
+
 
 .list-header {
   display: flex;
   flex-direction: row;
   height: 40px;
   line-height: 40px;
-  padding: 0 16px;
-  border-bottom: solid 1px rgba(0, 0, 0, .1);
+  padding: 0 24px;
+  font-size: 16px;
+  /*border-bottom: solid 1px rgba(0, 0, 0, .1);*/
   /*justify-content: flex-start;*/
 }
+
 .column-name {
-  width: 40%;
-  margin-right: 5px;
+  width: 50%;
+  /*margin-right: 5px;*/
 }
 .column-status {
   flex: 1;

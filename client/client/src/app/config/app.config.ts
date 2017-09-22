@@ -10,4 +10,49 @@ export const GOOGLE_API = {
   SCOPE: 'https://www.googleapis.com/auth/drive'
 };
 
-export const STORAGE_TOKEN_KEY = 'token';
+export const STORAGE_TOKEN_KEY = 'accessToken';
+
+export const AppConfig = {
+  toolbar: {
+    toggleButton: {
+      icon: {class: 'menu', type: 'md'}
+    },
+    brand: 'Hackathon',
+    github: {
+      icon: 'assets:github',
+      hint: 'Github - Hackathon Converter',
+      link: 'https://github.com/j-rewerts/hackathon-converter'
+    }
+  },
+  sideMenu: {
+    logo: 'assets:logo',
+    title: 'Hackathon',
+    appMenu: {
+      name: 'appMenu',
+      type: 'list',
+      list: [
+        {
+          name: 'home',
+          display: 'Home',
+          type: 'link',
+          icon: {class: 'home', type: 'md'},
+          link: {path: '/home'}
+        },
+        {
+          name: 'analyze',
+          display: 'Analyze',
+          type: 'link',
+          icon: {class: 'playlist_add_check', type: 'md'},
+          link: {path: '/reports'}
+        },
+        {
+          name: 'convert',
+          display: 'Convert',
+          type: 'link',
+          icon: {class: 'input', type: 'md'},
+          link: {path: '/convert'}
+        }
+      ]
+    },
+  }
+};
