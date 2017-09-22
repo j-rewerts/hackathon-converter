@@ -105,7 +105,8 @@ namespace Converter.Services.TaskRunner
             if (rowCountTotal > 2000000)
                 await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 6, string.Format("Row count exceeds 2,000,000. Row count is {0}", rowCountTotal));
 
-            if (readerWorkbook.FormulaCount > 40000)
+            int formulaCount = readerWorkbook.FormulaCount;
+            if (formulaCount > 40000)
                 await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 7, string.Format("Formula count exceeds 40,000. Formula count is {0}", formulaCount));
         }
 
