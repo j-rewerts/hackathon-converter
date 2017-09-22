@@ -1,27 +1,17 @@
 ﻿using Converter.Services.Data;
-using Converter.Services.OpenXml;
 using Converter.Services.TaskRunner;
-using Google.Cloud.PubSub.V1;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-
-using Converter.Services.Data;
 using Converter.Services.Data.DTO;
-using Converter.Services.TaskRunner;
+
 
 namespace Converter.Services.WebApi.Controllers
 {
@@ -32,16 +22,17 @@ namespace Converter.Services.WebApi.Controllers
     {
         public AnalysisController(IHostingEnvironment env,
             /*IAnalysisRepository repository,*/
-            ExcelAnalyzer excelAnalyzer,
+            /*ExcelAnalyzer excelAnalyzer,*/
             ILogger<AnalysisController> logger)
         {
             _env = env;
+            _logger = logger;
             //_repository = repository;
             // skipping the dependency injection because it seems to be broken in the Google Cloud
-            _logger.LogInformation("Starting AnalysisController");
+            _logger?.LogInformation("Starting AnalysisController");
             _repository = AnalysisRepositoryFactory.CreateRepository(GetDbContextOptions());
-            _excelAnalyzer = excelAnalyzer;
-            _logger = logger;
+            //_excelAnalyzer = excelAnalyzer;
+            _excelAnalyzer = new ExcelAnalyzer(_repository);
         }
 
         private Microsoft.EntityFrameworkCore.DbContextOptions GetDbContextOptions()
@@ -101,7 +92,7 @@ namespace Converter.Services.WebApi.Controllers
                 // Can't use Dependency Injection because our calling thread will
                 // dispose the objects
                 var excelAnalyzer = new ExcelAnalyzer(
-                    AnalysisRepositoryFactory.CreateRepository(GetDbContextOptions()), _excelAnalyzer.Logger);
+                    AnalysisRepositoryFactory.CreateRepository(GetDbContextOptions()));
 
                 await excelAnalyzer.AnalyzeAsync(id, oauthToken);
             });            

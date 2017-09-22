@@ -41,7 +41,7 @@ namespace Converter.Services.Tests
             {
                 var context = new AnalysisContext();
                 var repo = new AnalysisRepository(context);
-                var analyzer = new ExcelAnalyzer(repo, null);
+                var analyzer = new ExcelAnalyzer(repo);
 
                 await analyzer.AnalyzeAsync("1", stream);
             }
