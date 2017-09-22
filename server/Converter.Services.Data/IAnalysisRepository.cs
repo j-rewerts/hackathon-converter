@@ -17,5 +17,7 @@ namespace Converter.Services.Data
         Task<List<AnalysisDto>> RetrieveAnalysisesAsync();
         Task<AnalysisDto> RetrieveAnalysisByIdAsync(int analysisId);
         Task<WorkbookDto> RetrieveWorkbookByGoogleFileIdAsync(string googleFileId);
+
+        string ConnectionString { get; }
     }
 }

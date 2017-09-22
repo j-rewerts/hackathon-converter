@@ -11,6 +11,7 @@ using Converter.Services.TaskRunner;
 
 using Converter.Services.Data;
 using Converter.Services.Data.Maps;
+using Microsoft.EntityFrameworkCore;
 
 namespace Converter.Services.WebApi
 {
@@ -38,6 +39,7 @@ namespace Converter.Services.WebApi
             services.AddAnalysisRepository(options =>
             {
                 // TODO: configure database options (like connection string)
+                options.UseMySql(Configuration["AnalysisConnectionString"]);
             });
             MappingConfig.RegisterMaps();
 

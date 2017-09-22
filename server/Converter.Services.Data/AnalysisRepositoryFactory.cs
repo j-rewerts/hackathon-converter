@@ -7,16 +7,16 @@ namespace Converter.Services.Data
 {
     public static class AnalysisRepositoryFactory
     {
-        public static IAnalysisRepository CreateRepository()
-        {
-            return new AnalysisRepository(
-                new AnalysisContext());
-        }
-
-        //public static IAnalysisRepository CreateRepository(DbContextOptions<AnalysisContext> options)
+        //public static IAnalysisRepository CreateRepository()
         //{
         //    return new AnalysisRepository(
-        //        new AnalysisContext(options));
+        //        new AnalysisContext());
         //}
+
+        public static IAnalysisRepository CreateRepository(DbContextOptions options)
+        {
+            return new AnalysisRepository(
+                new AnalysisContext(options));
+        }
     }
 }
