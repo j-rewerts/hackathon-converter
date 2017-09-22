@@ -182,7 +182,7 @@ namespace Converter.Services.Data
         {
             var workbook = await _context.Workbook.ProjectTo<WorkbookDto>().FirstOrDefaultAsync(x => x.GoogleFileId == googleFileId);
             if (workbook is null)
-                return new WorkbookDto();
+                throw new Exception("Invalid Google File Id provided.");
             return workbook;
         }
     }
