@@ -15,7 +15,7 @@ namespace Converter.Services.Data
         Task<int> AddCellAsync(string worksheetName, string reference, string value, string formula);
         Task UpdateWorksheetCountsAsync(string name, int cellCount, int columnCount, int formulaCount, int rowCount);
         Task<List<AnalysisDto>> RetrieveAnalysisesAsync();
-        Task<AnalysisDto> RetrieveAnalysisByIdAsync(int analysisId);
+        Task<AnalysisDto> RetrieveAnalysisByGoogleFileIdAsync(string googleFileId);
         Task<WorkbookDto> RetrieveWorkbookByGoogleFileIdAsync(string googleFileId);
     }
 }

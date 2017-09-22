@@ -170,11 +170,11 @@ namespace Converter.Services.Data
             return analysises;
         }
 
-        public async Task<AnalysisDto> RetrieveAnalysisByIdAsync(int analysisId)
+        public async Task<AnalysisDto> RetrieveAnalysisByGoogleFileIdAsync(string googleFileId)
         {
-            var analysis = await _context.Analysis.ProjectTo<AnalysisDto>().FirstOrDefaultAsync(x => x.Id == analysisId);
+            var analysis = await _context.Analysis.ProjectTo<AnalysisDto>().FirstOrDefaultAsync(x => x.GoogleFileId == googleFileId);
             if (analysis is null)
-                return new AnalysisDto();
+                throw new Exception("Invalid Google File Id provided.");
             return analysis;
         }
 
