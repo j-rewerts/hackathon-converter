@@ -81,7 +81,7 @@ namespace Converter.Services.TaskRunner
             // now that we've read the workbook we can save the analysis results
             foreach (var cellInfo in reader.ReadFile())
             {
-                await _repository.AddCellAsync(cellInfo.SheetName, cellInfo.Reference, cellInfo.Value, cellInfo.Formula);
+                await _repository.AddCellAsync(cellInfo.SheetName, cellInfo.RowIndex, cellInfo.ColumnIndex, cellInfo.Reference, cellInfo.Value, cellInfo.Formula);
             }
         }
 

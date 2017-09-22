@@ -12,10 +12,10 @@ namespace Converter.Services.Data
         Task<int> AddCellIssueAsync(int analysisId, int issueTypeId, int cellId, string message);
         Task<int> AddWorkbookIssueAsync(int analysisId, int issueTypeId, string message);
         Task AddWorksheetsAsync(int workbookId, IEnumerable<string> names);
-        Task<int> AddCellAsync(string worksheetName, string reference, string value, string formula);
+        Task<int> AddCellAsync(string worksheetName, int rowIndex, int columnIndex, string reference, string value, string formula);
         Task UpdateWorksheetCountsAsync(string name, int cellCount, int columnCount, int formulaCount, int rowCount);
         Task<List<AnalysisDto>> RetrieveAnalysisesAsync();
-        Task<AnalysisDto> RetrieveAnalysisByIdAsync(int analysisId);
+        Task<AnalysisDto> RetrieveAnalysisByGoogleFileIdAsync(string googleFileId);
         Task<WorkbookDto> RetrieveWorkbookByGoogleFileIdAsync(string googleFileId);
 
         string ConnectionString { get; }

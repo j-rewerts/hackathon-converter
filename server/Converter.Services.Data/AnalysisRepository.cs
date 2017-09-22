@@ -134,7 +134,7 @@ namespace Converter.Services.Data
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> AddCellAsync(string worksheetName, string reference, string value, string formula)
+        public async Task<int> AddCellAsync(string worksheetName, int rowIndex, int columnIndex, string reference, string value, string formula)
         {
             var worksheet = _context.Worksheet.Include(x => x.Cells).FirstOrDefault(x => x.Name == worksheetName);
             if (worksheet is null)
@@ -145,6 +145,8 @@ namespace Converter.Services.Data
             {
                 cell = new Cell
                 {
+                    RowIndex = rowIndex,
+                    ColumnIndex = columnIndex,
                     Reference = reference,
                     Value = value,
                     Formula = formula
@@ -178,11 +180,11 @@ namespace Converter.Services.Data
             return analysises;
         }
 
-        public async Task<AnalysisDto> RetrieveAnalysisByIdAsync(int analysisId)
+        public async Task<AnalysisDto> RetrieveAnalysisByGoogleFileIdAsync(string googleFileId)
         {
-            var analysis = await _context.Analysis.ProjectTo<AnalysisDto>().FirstOrDefaultAsync(x => x.Id == analysisId);
+            var analysis = await _context.Analysis.ProjectTo<AnalysisDto>().FirstOrDefaultAsync(x => x.GoogleFileId == googleFileId);
             if (analysis is null)
-                return new AnalysisDto();
+                throw new Exception("Invalid Google File Id provided.");
             return analysis;
         }
 
@@ -190,7 +192,7 @@ namespace Converter.Services.Data
         {
             var workbook = await _context.Workbook.ProjectTo<WorkbookDto>().FirstOrDefaultAsync(x => x.GoogleFileId == googleFileId);
             if (workbook is null)
-                return new WorkbookDto();
+                throw new Exception("Invalid Google File Id provided.");
             return workbook;
         }
 
