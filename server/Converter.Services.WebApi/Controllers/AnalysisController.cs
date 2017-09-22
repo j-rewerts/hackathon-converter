@@ -94,7 +94,7 @@ namespace Converter.Services.WebApi.Controllers
                 var excelAnalyzer = new ExcelAnalyzer(
                     AnalysisRepositoryFactory.CreateRepository(GetDbContextOptions()));
 
-                await excelAnalyzer.AnalyzeAsync(id, oauthToken);
+                await excelAnalyzer.AnalyzeAsync(analysisId, id, oauthToken);
             });            
 
             return Ok();

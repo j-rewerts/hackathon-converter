@@ -34,7 +34,7 @@ namespace Converter.Services.TaskRunner
         private readonly IAnalysisRepository _repository;
         
 
-        public async Task AnalyzeAsync(string googleFileId, string oauthToken)
+        public async Task AnalyzeAsync(int analysisId, string googleFileId, string oauthToken)
         {
             if (string.IsNullOrWhiteSpace(googleFileId))
                 throw new ArgumentNullException("googleFileId");
@@ -47,7 +47,7 @@ namespace Converter.Services.TaskRunner
                 await GetGoogleDriveFileAsync(googleFileId, oauthToken, async stream => 
                 {
                     
-                    await AnalyzeAsync(googleFileId, stream);
+                    await AnalyzeAsync(analysisId, googleFileId, stream);
                 });
             }
             catch (Exception err)
@@ -56,7 +56,7 @@ namespace Converter.Services.TaskRunner
             }
         }
 
-        public async Task AnalyzeAsync(string googleFileId, Stream stream)
+        public async Task AnalyzeAsync(int analysisId, string googleFileId, Stream stream)
         {
             Data.DTO.WorkbookDto workbook;
             try
@@ -89,25 +89,25 @@ namespace Converter.Services.TaskRunner
             var readerWorksheets = reader.GetWorksheets();
 
             if (readerWorkbook.HasExternalConnections)
-                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 1, "Has External Connections");
+                await _repository.AddWorkbookIssueAsync(analysisId, 1, "Has External Connections");
             if (readerWorkbook.HasCustomCode)
-                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 2, "Has Custom Code");
+                await _repository.AddWorkbookIssueAsync(analysisId, 2, "Has Custom Code");
             if (readerWorkbook.HasDataConnections)
-                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 3, "Has Data Connections");
+                await _repository.AddWorkbookIssueAsync(analysisId, 3, "Has Data Connections");
             if (readerWorkbook.HasExternalHyperLinks)
-                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 4, "Has External Hyper Links");
+                await _repository.AddWorkbookIssueAsync(analysisId, 4, "Has External Hyper Links");
             if (readerWorkbook.HasExternalRelationships)
-                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 5, "Has External Relationships");
+                await _repository.AddWorkbookIssueAsync(analysisId, 5, "Has External Relationships");
 
             uint rowCountTotal = 0;
             foreach (Worksheet worksheet in readerWorksheets)
                 rowCountTotal += worksheet.CellCount;
             if (rowCountTotal > 2000000)
-                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 6, string.Format("Row count exceeds 2,000,000. Row count is {0}", rowCountTotal));
+                await _repository.AddWorkbookIssueAsync(analysisId, 6, string.Format("Row count exceeds 2,000,000. Row count is {0}", rowCountTotal));
 
             int formulaCount = readerWorkbook.FormulaCount;
             if (formulaCount > 40000)
-                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 7, string.Format("Formula count exceeds 40,000. Formula count is {0}", formulaCount));
+                await _repository.AddWorkbookIssueAsync(analysisId, 7, string.Format("Formula count exceeds 40,000. Formula count is {0}", formulaCount));
         }
 
         internal static async Task GetGoogleDriveFileAsync(string id, string oauthToken, Func<Stream, Task> callback)

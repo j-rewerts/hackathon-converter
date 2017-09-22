@@ -43,7 +43,7 @@ namespace Converter.Services.Tests
                 var repo = new AnalysisRepository(context);
                 var analyzer = new ExcelAnalyzer(repo);
 
-                await analyzer.AnalyzeAsync("1", stream);
+                await analyzer.AnalyzeAsync(1, "1", stream);
             }
         }
 

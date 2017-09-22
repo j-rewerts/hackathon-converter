@@ -10,7 +10,7 @@ namespace Converter.Services.Data.Models
         public string Name { get; set; }
         public string GoogleFileID { get; set; }
 
-        public Analysis Analysis { get; set; }
+        //public Analysis Analysis { get; set; }
         public List<Worksheet> Worksheets { get; set; }
     }
 }
