@@ -34,6 +34,8 @@ namespace Converter.Services.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            MappingConfig.RegisterMaps();
+
             // Add framework services.
             services.AddMvc();
             services.AddAnalysisRepository(options =>
@@ -41,7 +43,6 @@ namespace Converter.Services.WebApi
                 // TODO: configure database options (like connection string)
                 options.UseMySql(Configuration["AnalysisConnectionString"]);
             });
-            MappingConfig.RegisterMaps();
 
             //services.AddScoped<ExcelAnalyzer>();
         }

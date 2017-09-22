@@ -174,7 +174,24 @@ namespace Converter.Services.Data
 
         public async Task<List<AnalysisDto>> RetrieveAnalysisesAsync()
         {
-            var analysises = await _context.Analysis.ProjectTo<AnalysisDto>().ToListAsync();
+            // var analysises = await _context.Analysis.ProjectTo<AnalysisDto>().ToListAsync();
+            var analysises = _context.Analysis
+                .Select(x => new AnalysisDto()
+                {
+                    FileName  = x.Workbook.Name,
+                    Id = x.AnalysisID,
+                    GoogleFileId = x.Workbook.GoogleFileID,
+                    Status =  x.AnalysisStatus,
+                    Issues = x.Issues.Select(y => new IssueDto()
+                    {
+                        Id = y.IssueID,
+                        Type = y.IssueType.Description,
+                        Message = y.Message
+                    }).ToList()
+                }).ToList();
+
+ 
+
             if (analysises is null)
                 return new List<AnalysisDto>();
             return analysises;

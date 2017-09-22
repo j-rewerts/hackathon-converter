@@ -140,6 +140,11 @@ namespace Converter.Services.WebApi.Controllers
             List<AnalysisDto> analysises = new List<AnalysisDto>();
             try
             {
+                //try
+                //{
+                //    Data.Maps.MappingConfig.RegisterMaps();
+                //}
+                //catch (Exception) { }
                 analysises = await _repository.RetrieveAnalysisesAsync();
             }
             catch (Exception err)
