@@ -61,7 +61,11 @@ namespace Converter.Services.WebApi
             });
 
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "{controller}/{action}");
+                routes.MapRoute("Spa", "{*url}", defaults: new { controller = "Home", action = "Spa" });
+            });
 
 
         }
