@@ -1,34 +1,46 @@
-﻿using System;
+﻿using Converter.Services.Data;
+using Converter.Services.TaskRunner;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-
-using Converter.Services.Data;
 using Converter.Services.Data.DTO;
-using Converter.Services.TaskRunner;
+
 
 namespace Converter.Services.WebApi.Controllers
 {
     /// http://localhost:24822/Analysis/Start/abc123
     /// note: abc123 is the fileId
     [Route("[controller]")]
-    public class AnalysisController : Controller
+    public class AnalysisController : Controller, IDisposable
     {
         public AnalysisController(IHostingEnvironment env,
-            IAnalysisRepository repository,
-            ExcelAnalyzer excelAnalyzer,
+            /*IAnalysisRepository repository,*/
+            /*ExcelAnalyzer excelAnalyzer,*/
             ILogger<AnalysisController> logger)
         {
             _env = env;
-            _repository = repository;
-            _excelAnalyzer = excelAnalyzer;
             _logger = logger;
+            //_repository = repository;
+            // skipping the dependency injection because it seems to be broken in the Google Cloud
+            _logger?.LogInformation("Starting AnalysisController");
+            _repository = AnalysisRepositoryFactory.CreateRepository(GetDbContextOptions());
+            //_excelAnalyzer = excelAnalyzer;
+            _excelAnalyzer = new ExcelAnalyzer(_repository);
+        }
+
+        private Microsoft.EntityFrameworkCore.DbContextOptions GetDbContextOptions()
+        {
+
+            var b = new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder();
+            b.UseMySql("server=35.197.80.226;Database=Converter;Uid=root;Pwd=P@ssw0rd");
+            return b.Options;
         }
 
         private readonly IHostingEnvironment _env;
@@ -47,16 +59,22 @@ namespace Converter.Services.WebApi.Controllers
         public async Task<IActionResult> Start(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
+            {
                 throw new ArgumentNullException("id");
+            }
 
             string oauthToken = OAuthToken;
             if (string.IsNullOrWhiteSpace(oauthToken))
+            {
+                _logger.LogWarning($"Analysis requested but no OAuth token was provided. File id was { id }");
                 throw new SecurityException("No OAuth token provided in request");
+            }
 
-            //Task<int> analysisIdTask;
             int analysisId;
             try
             {
+                _logger.LogInformation($"Adding Google File to database for starting anaylsis: { id }");
+                _logger.LogInformation($"Using connection string: { _repository.ConnectionString }");
                 analysisId =  await _repository.StartAnalysisAsync(id);
             }
             catch (Exception err)
@@ -69,10 +87,12 @@ namespace Converter.Services.WebApi.Controllers
             // start analyzing immediately on new thread
             ThreadPool.QueueUserWorkItem(async s =>
             {
+                _logger.LogInformation("Starting analysis for Google file { id }");
+
                 // Can't use Dependency Injection because our calling thread will
                 // dispose the objects
                 var excelAnalyzer = new ExcelAnalyzer(
-                    AnalysisRepositoryFactory.CreateRepository(), _excelAnalyzer.Logger);
+                    AnalysisRepositoryFactory.CreateRepository(GetDbContextOptions()));
 
                 await excelAnalyzer.AnalyzeAsync(id, oauthToken);
             });            
@@ -120,6 +140,11 @@ namespace Converter.Services.WebApi.Controllers
             List<AnalysisDto> analysises = new List<AnalysisDto>();
             try
             {
+                //try
+                //{
+                //    Data.Maps.MappingConfig.RegisterMaps();
+                //}
+                //catch (Exception) { }
                 analysises = await _repository.RetrieveAnalysisesAsync();
             }
             catch (Exception err)
@@ -144,6 +169,15 @@ namespace Converter.Services.WebApi.Controllers
                     return null;
             }
         }
-       
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            var repository = _repository as IDisposable;
+            if (repository != null)
+                repository.Dispose();
+        }
+
     }
 }

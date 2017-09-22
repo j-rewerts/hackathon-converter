@@ -18,19 +18,19 @@ namespace Converter.Services.TaskRunner
 
 
         public ExcelAnalyzer(
-            IAnalysisRepository repository,
-            ILogger<ExcelAnalyzer> logger
+            IAnalysisRepository repository/*,
+            ILogger<ExcelAnalyzer> logger*/
             )
         {
-            if (logger == null)
-                _logger = new Logger<ExcelAnalyzer>(new LoggerFactory());
-            else
-                _logger = logger;
+            //if (logger == null)
+            //    _logger = new Logger<ExcelAnalyzer>(new LoggerFactory());
+            //else
+            //    _logger = logger;
             this._repository = repository;
         }
 
-        private readonly ILogger<ExcelAnalyzer> _logger;
-        public ILogger<ExcelAnalyzer> Logger { get { return _logger; } }
+        //private readonly ILogger<ExcelAnalyzer> _logger;
+        //public ILogger<ExcelAnalyzer> Logger { get { return _logger; } }
         private readonly IAnalysisRepository _repository;
         
 
@@ -52,7 +52,7 @@ namespace Converter.Services.TaskRunner
             }
             catch (Exception err)
             {
-                _logger.LogError(1, err, $"Unable to get Google drive file: { err.Message}");
+                //_logger.LogError(1, err, $"Unable to get Google drive file: { err.Message}");
             }
         }
 

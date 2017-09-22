@@ -26,9 +26,11 @@ namespace Converter.Services.OpenXml
             workbook.HasExternalConnections = false;
             workbook.HasExternalHyperLinks = false;
             workbook.HasExternalRelationships = false;
+            workbook.FormulaCount = 0;
             worksheets = new List<Worksheet>();
             connections = new List<Connections>();
             workbook.ExternalRelationships = new HashSet<string>();
+
 
             try
             {
@@ -209,6 +211,8 @@ namespace Converter.Services.OpenXml
                     reference = c.CellReference;
                     text = workbookPart.TryGetStringFromCell(c);// c.CellValue.Text;
                     formula = c.CellFormula?.InnerText;
+                    if (formula != null)
+                        workbook.FormulaCount++;
                     Console.Write(text + " ");
                     yield return new CellInfo() {
                         Cell = c,

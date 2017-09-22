@@ -13,8 +13,8 @@ namespace Converter.Services.Data
             Action<DbContextOptionsBuilder> options)
         {
             //services.AddDbContext<AnalysisContext>(o => options(o));
-            services.AddScoped<IAnalysisContext, AnalysisContext>();
-            services.AddScoped<IAnalysisRepository, AnalysisRepository>();
+            //services.AddScoped<IAnalysisContext, AnalysisContext>();
+            //services.AddScoped<IAnalysisRepository, AnalysisRepository>();
         }
     }
 }

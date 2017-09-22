@@ -11,6 +11,7 @@ using Converter.Services.TaskRunner;
 
 using Converter.Services.Data;
 using Converter.Services.Data.Maps;
+using Microsoft.EntityFrameworkCore;
 
 namespace Converter.Services.WebApi
 {
@@ -33,15 +34,17 @@ namespace Converter.Services.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            MappingConfig.RegisterMaps();
+
             // Add framework services.
             services.AddMvc();
             services.AddAnalysisRepository(options =>
             {
                 // TODO: configure database options (like connection string)
+                options.UseMySql(Configuration["AnalysisConnectionString"]);
             });
-            MappingConfig.RegisterMaps();
 
-            services.AddScoped<ExcelAnalyzer>();
+            //services.AddScoped<ExcelAnalyzer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
