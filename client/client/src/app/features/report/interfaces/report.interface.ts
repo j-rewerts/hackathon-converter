@@ -6,7 +6,8 @@ export interface IIssue {
 
 export interface IFile {
   id: string;
-  filename: string;
+  fileName: string;
   status: string;
+  googleFileId?: string;
   issues?: IIssue[];
 }

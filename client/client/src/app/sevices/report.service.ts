@@ -13,10 +13,10 @@ export class ReportService {
   constructor(private httpService: HttpInterceptorService) {}
 
   analyzeFile(fileId: string): Observable<any> {
-    return this.httpService.post(API_ENDPOINT.ANALYZE_FILE + fileId, {})
-      .map((res: Response) => res);
-    // return this.httpService.post(API_ENDPOINT.ANALYZE_FILE, {})
+    // return this.httpService.post(API_ENDPOINT.ANALYZE_FILE + fileId, {})
     //   .map((res: Response) => res);
+    return this.httpService.post(API_ENDPOINT.ANALYZE_FILE, {})
+      .map((res: Response) => res);
   }
 
   getReports(): Observable<IFile[]> {
