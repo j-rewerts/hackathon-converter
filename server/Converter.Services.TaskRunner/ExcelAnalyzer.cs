@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Converter.Services.OpenXml;
 using Converter.Services.Data;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Converter.Services.TaskRunner
 {
@@ -83,6 +84,29 @@ namespace Converter.Services.TaskRunner
             {
                 await _repository.AddCellAsync(cellInfo.SheetName, cellInfo.RowIndex, cellInfo.ColumnIndex, cellInfo.Reference, cellInfo.Value, cellInfo.Formula);
             }
+
+            var readerWorkbook = reader.GetWorkbook();
+            var readerWorksheets = reader.GetWorksheets();
+
+            if (readerWorkbook.HasExternalConnections)
+                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 1, "Has External Connections");
+            if (readerWorkbook.HasCustomCode)
+                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 2, "Has Custom Code");
+            if (readerWorkbook.HasDataConnections)
+                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 3, "Has Data Connections");
+            if (readerWorkbook.HasExternalHyperLinks)
+                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 4, "Has External Hyper Links");
+            if (readerWorkbook.HasExternalRelationships)
+                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 5, "Has External Relationships");
+
+            uint rowCountTotal = 0;
+            foreach (Worksheet worksheet in readerWorksheets)
+                rowCountTotal += worksheet.CellCount;
+            if (rowCountTotal > 2000000)
+                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 6, string.Format("Row count exceeds 2,000,000. Row count is {0}", rowCountTotal));
+
+            if (readerWorkbook.FormulaCount > 40000)
+                await _repository.AddWorkbookIssueAsync(workbook.AnalysisId, 7, string.Format("Formula count exceeds 40,000. Formula count is {0}", formulaCount));
         }
 
         internal static async Task GetGoogleDriveFileAsync(string id, string oauthToken, Func<Stream, Task> callback)
