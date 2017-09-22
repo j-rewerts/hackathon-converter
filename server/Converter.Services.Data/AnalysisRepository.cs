@@ -126,7 +126,7 @@ namespace Converter.Services.Data
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> AddCellAsync(string worksheetName, string reference, string value, string formula)
+        public async Task<int> AddCellAsync(string worksheetName, int rowIndex, int columnIndex, string reference, string value, string formula)
         {
             var worksheet = _context.Worksheet.Include(x => x.Cells).FirstOrDefault(x => x.Name == worksheetName);
             if (worksheet is null)
@@ -137,6 +137,8 @@ namespace Converter.Services.Data
             {
                 cell = new Cell
                 {
+                    RowIndex = rowIndex,
+                    ColumnIndex = columnIndex,
                     Reference = reference,
                     Value = value,
                     Formula = formula

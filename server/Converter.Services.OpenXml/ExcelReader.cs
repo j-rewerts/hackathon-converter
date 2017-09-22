@@ -168,6 +168,8 @@ namespace Converter.Services.OpenXml
         private IEnumerable<CellInfo> GetCellValues(WorkbookPart workbookPart, 
             SheetData sheetData, string sheetName)
         {
+            int rowIndex = 0;
+            int columnIndex = 0;
             string reference = "";
             string text = "";
             string formula = "";
@@ -202,12 +204,21 @@ namespace Converter.Services.OpenXml
 
                 foreach (Cell c in r.Elements<Cell>())
                 {
-                    //c.GetRowIndex();
+                    rowIndex = c.GetRowIndex();
+                    columnIndex = c.GetColumnReferenceIndex();
                     reference = c.CellReference;
                     text = workbookPart.TryGetStringFromCell(c);// c.CellValue.Text;
                     formula = c.CellFormula?.InnerText;
                     Console.Write(text + " ");
-                    yield return new CellInfo() { Cell = c, Reference = reference, Value = text, SheetName = sheetName, Formula = formula };
+                    yield return new CellInfo() {
+                        Cell = c,
+                        RowIndex = rowIndex,
+                        ColumnIndex = columnIndex,
+                        Reference = reference,
+                        Value = text,
+                        SheetName = sheetName,
+                        Formula = formula
+                    };
                 }
             }
             this.worksheets.Add(worksheetInfo);
