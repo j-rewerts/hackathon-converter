@@ -44,3 +44,4 @@ server/**.suo
 server/**/storage.ide
 .vs/
 .vs/slnx.sqlite
+*client_secret*

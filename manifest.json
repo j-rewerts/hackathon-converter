@@ -1,0 +1,28 @@
+{
+    "name": "hackathon converter",
+    "version": "3",
+    "manifest_version": 3,
+    "description": "hackathon converter",
+    "container": ["GOOGLE_DRIVE"],
+    "api_console_project_id": "902730555629",
+    "gdrive_mime_types": {
+      "http://drive.google.com/intents/opendrivedoc": [
+        {
+          "type": ["image/png", "image/jpeg", "image/gif", "application/vnd.google.drive.ext-type.png",
+          "application/vnd.google.drive.ext-type.jpg","application/vnd.google.drive.ext-type.gif",
+          "application/vnd.ms-excel.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
+          "href": "https://jrewerts-project.appspot.com/",
+          "title": "Open",
+          "disposition": "window"
+        }
+      ]
+    },
+    "icons": {
+      "128": "icon.png"
+    },
+    "app": {
+      "launch": {
+      "web_url": "https://jrewerts-project.appspot.com"
+      }
+    }
+}

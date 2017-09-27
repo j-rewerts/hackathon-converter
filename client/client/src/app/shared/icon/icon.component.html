@@ -1,0 +1,20 @@
+<md-icon
+  *ngIf="data.avatar"
+  md-list-avatar
+  [ngClass]="cssClass ? cssClass : ''"
+  fontSet="{{isFontSet() ? data.type : ''}}"
+  fontIcon="{{isFontSet() ? data.class : ''}}"
+  [svgIcon]="isSvgIcon() ? data.class : ''"
+  [routerLink]="link ? link.param ? [link.path, link.param] : [link.path] : []">
+  {{isMaterialIcon() ? data.class : ''}}
+</md-icon>
+
+<md-icon
+  *ngIf="!data.avatar"
+  [ngClass]="cssClass ? cssClass : ''"
+  fontSet="{{isFontSet() ? data.type : ''}}"
+  fontIcon="{{isFontSet() ? data.class : ''}}"
+  [svgIcon]="isSvgIcon() ? data.class : ''"
+  [routerLink]="link ? link.param ? [link.path, link.param] : [link.path] : []">
+  {{isMaterialIcon() ? data.class : ''}}
+</md-icon>
