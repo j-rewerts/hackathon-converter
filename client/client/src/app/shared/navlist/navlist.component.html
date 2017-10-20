@@ -1,0 +1,35 @@
+<md-nav-list>
+  <ng-template let-item let-i="index" ngFor [ngForOf]="navListData.list">
+    <a *ngIf="item.type === 'link'"
+       md-list-item
+       [routerLink]="item.link ? item.link.param ? [item.link.path, item.link.param] : [item.link.path] : []"
+       [ngClass]="{'item-selected': selectable && selectedIndex === i}"
+       (click)="onClicked(i, item)">
+      <cv-icon *ngIf="item.icon" [data]="item.icon"></cv-icon>
+      <span *ngIf="!multiLine">{{item.display}}</span>
+      <h3 *ngIf="multiLine" md-line> {{item.display}} </h3>
+      <p *ngIf="multiLine" md-line> {{item.description}} </p>
+    </a>
+
+    <td-expansion-panel *ngIf="item.type === 'list'">
+      <ng-template td-expansion-panel-label>
+        <a md-list-item
+           disableRipple
+           [ngClass]="{'item-selected': selectable && selectedIndex === i}"
+           (click)="onClicked(i, item)">
+          <cv-icon *ngIf="item.icon" [data]="item.icon"></cv-icon>
+          {{item.display}}
+        </a>
+      </ng-template>
+      <md-list>
+        <a *ngFor="let subItem of item.list"
+           md-list-item
+           [routerLink]="subItem.link ? subItem.link.param ? [subItem.link.path, subItem.link.param] : [subItem.link.path] : []"
+           (click)="onClicked($event)">
+          <cv-icon *ngIf="subItem.icon" [data]="subItem.icon"></cv-icon>
+          <span>{{subItem.display}}</span>
+        </a>
+      </md-list>
+    </td-expansion-panel>
+  </ng-template>
+</md-nav-list>

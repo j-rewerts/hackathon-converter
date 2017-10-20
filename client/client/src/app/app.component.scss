@@ -1,0 +1,15 @@
+:host /deep/ {
+  td-navigation-drawer md-toolbar .mat-icon.md-icon-logo {
+    width: 40px;
+    height: auto
+  }
+  td-navigation-drawer md-toolbar .md-subhead {
+    font-size: 22px;
+    font-weight: bold;
+    opacity: 0.7;
+  }
+  md-icon {
+    font-size: 26px !important;
+    line-height: 26px !important;
+  }
+}
