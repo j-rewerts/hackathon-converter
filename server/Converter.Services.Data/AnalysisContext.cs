@@ -29,12 +29,12 @@ namespace Converter.Services.Data
             // TODO: setup fluent API stuff 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    base.OnConfiguring(optionsBuilder);
 
-            string connectionString = "server=35.197.80.226;Database=Converter;Uid=root;Pwd=P@ssw0rd;"; //TODO get from configuration
-            optionsBuilder.UseMySql(connectionString);
-        }
+        //    string connectionString = "server=35.197.80.226;Database=Converter;Uid=root;Pwd=P@ssw0rd;"; //TODO get from configuration
+        //    optionsBuilder.UseMySql(connectionString);
+        //}
     }
 }
